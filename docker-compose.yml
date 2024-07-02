@@ -1,0 +1,17 @@
+version: '3.6'
+services:
+  ruby:
+    build:
+      dockerfile: Dockerfile
+    working_dir: /usr/src/app
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    dns: 8.8.8.8
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - APP_ENV=$APP_ENV
+    # entrypoint:
+    #   - bash

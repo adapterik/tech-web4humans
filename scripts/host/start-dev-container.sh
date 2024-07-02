@@ -1,0 +1,1 @@
+DIR=`pwd` docker compose run --service-ports ruby      

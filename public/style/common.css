@@ -1,0 +1,13 @@
+:root {
+    --usaRed: #cc2127;
+    --usaBlue: #21449d;
+    --usaLightBlue: #4161b3;
+    --usaLighterBlue: #627cbf;
+    --usaLighterLighterBlue: #E6ECFA;
+    --usaExtraLightBlue: #F2F6FC;
+    --usaSuperLightBlue: #F5F7FC;
+
+    --boldlyRed: rgb(148, 2, 2);
+
+    --monetaryGreen: #118C4F;
+}

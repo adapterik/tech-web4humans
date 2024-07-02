@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%= include_partial "head" %>
+</head>
+<body>
+
+<%= include_partial "header" %>
+
+<div class="container row-gap-2">
+  <div class="row pt-2 pb-2">
+    <div class="col">
+      <h1>
+        Sorry Not Found
+      </h1>
+
+      <p>
+        Sorry, the page <b><%= @context[:env][:page][:original_page_id] %></b> was not found.
+      </p>
+    </div>
+  </div>
+</div>
+
+<%= include_partial "footer" %>
+
+</body>
+</html>

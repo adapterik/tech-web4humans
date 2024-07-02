@@ -1,0 +1,3 @@
+# Adapt
+
+Adapt or die.

@@ -1,8 +1,32 @@
-<div class="container-fluid footer">
+<div class="container-fluid footer bg-secondary mt-4">
   <div class="row">
+    <!-- because, for some reason, bootstrap columns are not flexboxes -->
+    <div class="col d-flex flex-column justify-content-center align-items-start">
+      <div class="row">
+        <small>Copyright © 2024 Adaptations</small>
+      </div>
+    </div>
     <div class="col">
-      <div>Copyright © 2024 Adaptations. All Rights Reserved.</div>
+      <div class="btn-toolbar justify-content-end">
+        <a class="btn btn-text" href="/contact">
+          contact
+        </a>
+        <a class="btn btn-text" href="/accessibility">
+          accessibility          
+        </a>
+        <% if @context[:session].nil? %>
+          <a class="btn btn-text" href="/signin">
+            sign in
+          </a>
+        <% else %>
+          <form action="/signout" method="post">
+            <button class="btn btn-text" type="submit":width>
+              <input type="text" value="" name="dummy" style="display: none;">
+              sign out <b><%= @context[:session]["user_id"] %></b>
+            </button>
+          </form>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
-

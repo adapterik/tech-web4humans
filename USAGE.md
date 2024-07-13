@@ -64,3 +64,6 @@ SPARKPOST_API_KEY=xxx HOME_DIR=`pwd` bundle exec guard -i
 
 
 
+in container:
+
+HOME_DIR=`pwd` bundle exec guard -i

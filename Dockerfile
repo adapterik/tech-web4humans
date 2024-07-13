@@ -1,4 +1,4 @@
-FROM ruby:3.3.1-alpine3.18
+FROM docker.io/ruby:3.4.0-preview1-alpine3.20
 
 # Packages db must be updated first, add os dependencies
 # required by Ruby gems (in this case just passenger)

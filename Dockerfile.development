@@ -1,4 +1,4 @@
-FROM ruby:3.2.2-slim-bullseye
+FROM docker.io/ruby:3.4.0-preview1-alpine3.20
 
 # Add support for nio4r, a transitive dependency from puma
 RUN apt-get update

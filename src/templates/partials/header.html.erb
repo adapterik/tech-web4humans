@@ -2,17 +2,17 @@
   <div class="row" style="border-bottom: 1px solid silver;">
     <div class="col">
       <div class="row adaptations-container">
-        <a href="/" class="adaptations-letter <% if @context[:content_id] == :home %>-selected<% end %>">A</a>
-        <a href="/development" class="adaptations-letter <% if @context[:content_id] == :development %>-selected<% end %>">D</a>
-        <a href="/articles" class="adaptations-letter <% if @context[:content_id] == :articles %>-selected<% end %>">A</a>
-        <a href="/patterns" class="adaptations-letter <% if @context[:content_id] == :patterns %>-selected<% end %>">P</a>
-        <a href="/tech" class="adaptations-letter <% if @context[:content_id] == :tech %>-selected<% end %>">T</a>
-        <a href="/attitude" class="adaptations-letter <% if @context[:content_id] == :attitude %>-selected<% end %>">A</a>
-        <a href="/tatters" class="adaptations-letter <% if @context[:content_id] == :tatters %>-selected<% end %>">T</a>
-        <a href="/intentional" class="adaptations-letter <% if @context[:content_id] == :intentional %>-selected<% end %>">I</a>
-        <a href="/obscure" class="adaptations-letter <% if @context[:content_id] == :obscure %>-selected<% end %>">O</a>
-        <a href="/name" class="adaptations-letter <% if @context[:content_id] == :name %>-selected<% end %>">N</a>
-        <a href="/something" class="adaptations-letter <% if @context[:content_id] == :something %>-selected<% end %>">S</a>
+        <a href="/" class="adaptations-letter <% if @context[:content_id] == 'home' %>-selected<% end %>">A</a>
+        <a href="/page/development" class="adaptations-letter <% if @context[:content_id] == 'development' %>-selected<% end %>">D</a>
+        <a href="/articles" class="adaptations-letter <% if @context[:endpoint_name] == 'articles' %>-selected<% end %>">A</a>
+        <a href="/page/patterns" class="adaptations-letter <% if @context[:content_id] == 'patterns' %>-selected<% end %>">P</a>
+        <a href="/page/tech" class="adaptations-letter <% if @context[:content_id] == 'tech' %>-selected<% end %>">T</a>
+        <a href="/page/attitude" class="adaptations-letter <% if @context[:content_id] == 'attitude' %>-selected<% end %>">A</a>
+        <a href="/page/todo" class="adaptations-letter <% if @context[:content_id] == 'todo' %>-selected<% end %>">T</a>
+        <a href="/page/intentional" class="adaptations-letter <% if @context[:content_id] == 'intentional' %>-selected<% end %>">I</a>
+        <a href="/page/obscure" class="adaptations-letter <% if @context[:content_id] == 'obscure' %>-selected<% end %>">O</a>
+        <a href="/page/notes" class="adaptations-letter <% if @context[:content_id] == 'notes' %>-selected<% end %>">N</a>
+        <a href="/page/stream" class="adaptations-letter <% if @context[:content_id] == 'stream' %>-selected<% end %>">S</a>
       </div>
     </div>
   </div>

@@ -1,4 +1,4 @@
-<div class="container-fluid footer bg-secondary mt-4">
+<div class="container-fluid footer bg-secondary">
   <div class="row">
     <!-- because, for some reason, bootstrap columns are not flexboxes -->
     <div class="col d-flex flex-column justify-content-center align-items-start">
@@ -8,19 +8,25 @@
     </div>
     <div class="col">
       <div class="btn-toolbar justify-content-end">
-        <a class="btn btn-text" href="/contact">
+        <% if false %>
+          <a class="btn btn-text" href="/edit/<%= @context[:content]['id'] %>" >
+            edit this <%= @context[:content]['content_type'] %>
+          </a>
+        <% end %>
+        <a class="btn btn-text" href="/page/contact">
           contact
         </a>
-        <a class="btn btn-text" href="/accessibility">
+        <a class="btn btn-text" href="/page/accessibility">
           accessibility          
         </a>
         <% if @context[:session].nil? %>
-          <a class="btn btn-text" href="/signin">
+          <a class="btn btn-text" href="/signin?return-path=<%= @context[:path] %>">
             sign in
           </a>
         <% else %>
-          <form action="/signout" method="post">
-            <button class="btn btn-text" type="submit":width>
+          <form action="/authenticate" method="post">
+            <input type="hidden" name="_method" value="delete">
+            <button class="btn btn-text" type="submit">
               <input type="text" value="" name="dummy" style="display: none;">
               sign out <b><%= @context[:session]["user_id"] %></b>
             </button>
@@ -30,3 +36,15 @@
     </div>
   </div>
 </div>
+<script>
+  function renderDates() {
+    const toFormat = document.querySelectorAll('[data-renderer="format-date"]');
+
+    toFormat.forEach((element) => {
+      const time = parseInt(element.innerText, 10) * 1000;
+      const formatted = new Intl.DateTimeFormat('en-US', {dateStyle: 'short', timeStyle: 'short'}).format(new Date(time));
+      element.innerHTML = formatted;
+    })
+
+  }
+</script>

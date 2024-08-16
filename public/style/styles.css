@@ -1,22 +1,7 @@
 @import "common.css";
 
-/* Responsive video 
-   Override the padding-bottom to set the aspect ratio.
-*/
-.youtube-video-frame {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 56.25%;
-    margin-bottom: 1em
-}
-
-.youtube-video-frame iframe {
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%
+body {
+    height: 100vh;
 }
 
 .footer {
@@ -62,4 +47,174 @@ a.adaptations-letter {
 
 .article p + p {
     margin-top: 1rem;
+}
+
+.split-body {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.split-body > .col1 {
+    /* flex: 0 0 50em; */
+    flex: 1 1 0;
+}
+
+.split-body > .col2 {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.full-height-flex {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+}
+
+form textarea {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.markdown-preview {
+    background-color: rgba(100, 100, 100, 1);
+    flex: 1 1 0;
+    overflow-y: auto;
+}
+
+/*
+General wrapper style for content area
+*/
+.content-area {
+    /* width: 50rem; */
+    font-family: sans-serif;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+ 
+.vertical-scroll-auto {
+    overflow-y: auto;
+}
+
+.two-column-page {
+   
+}
+
+.two-column-page .-grid {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.two-column-page .-col1 {
+    flex: 1 1 0;
+    overflow-y: auto;
+}
+
+.two-column-page .-col2 {
+    flex: 0 0 20rem;
+    overflow-y: auto;
+}
+
+.adapt-grid {
+    display: flex; 
+    flex-direction: column;
+}
+
+.adapt-grid-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.adapt-grid-row > .adapt-grid-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.adapt-grid-row > .adapt-grid-col.-fill {
+    flex: 1 1 0;
+}
+
+.adapt-grid-row > .adapt-grid-col.-auto {
+    flex: 0 0 auto;
+}
+
+.adapt-grid-row.-gutter-1 > .adapt-grid-col {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.adapt-grid-row.-gutter-1 > .adapt-grid-col:nth-child(1) {
+    padding-left: 0;
+}
+
+.adapt-grid-row.-gutter-1 > .adapt-grid-col:last-child {
+    padding-right: 0;
+}
+
+.home {
+    /* width: 50rem; */
+    font-family: sans-serif;
+    margin: 1rem;
+}
+
+.page-header {
+    /* margin: 1rem; */
+    background-color: rgba(100, 100, 100, 1);
+}
+
+
+.adapt-flex-table {
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem;
+}
+
+.adapt-flex-table.-resizable {
+    overflow: hidden;
+    resize: vertical;
+}
+
+.adapt-flex-table.-scrollable {
+
+}
+
+.adapt-flex-table.-bordered {
+    border: 1px dashed silver;
+    border-radius: 0.25rem;
+}
+
+.adapt-flex-row {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: row;
+}
+
+.adapt-flex-table-header {
+    border-bottom: 1px dashed silver;
+}
+
+.adapt-flex-table-body {
+    flex: 1 1 0;
+    overflow-y: auto;
+}
+
+.adapt-flex-col {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    padding: 0.25rem;
+}
+
+.adapt-well {
+    border: 1px dashed silver;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.adapt-well + p {
+    padding-top: 1rem;
 }

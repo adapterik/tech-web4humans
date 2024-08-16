@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= include_partial "head" %>
+  </head>
+  <body data-bs-theme="dark" class="d-flex flex-column" style="height: 100vh;">
+    <%= include_partial "home-header" %>
+    <div class="home flex-grow-1 overflow-y-auto">
+       <ul class="nav nav-pills justify-content-start fs-3" role="tablist">
+        <li class="nav-item" role="tab" <% if @tab == 'home'%>aria-selected<% end %>>
+          <a class="nav-link <% if @tab == 'home'%>active<% end %>" aria-current="pages" href="/home">Home</a>
+        </li>
+        <li class="nav-item" role="tab" <% if @tab == 'pages'%>aria-selected<% end %>>
+          <a class="nav-link <% if @tab == "pages"%>active<% end %>" aria-current="pages" href="/home/pages">Pages</a>
+        </li>
+        <li class="nav-item" role="tab" <% if @tab == 'articles'%>aria-selected<% end %>>
+          <a class="nav-link <% if @tab == "articles"%>active<% end %>" href="/home/articles">Articles</a>
+        </li>
+        <li class="nav-item" role="tab" <% if @tab == 'blog'%>aria-selected<% end %>>
+          <a class="nav-link <% if @tab == "blog"%>active<% end %>" href="/home/blog">Blog</a>
+        </li>
+        <li class="nav-item" role="tab" <% if @tab == 'thoughts'%>aria-selected<% end %>>
+          <a class="nav-link <% if @tab == "thoughts"%>active<% end %>" href="/home/thoughts">Thoughts</a>
+        </li>
+        <li class="nav-item" role="tab" <% if @tab == 'projects'%>aria-selected<% end %>>
+          <a class="nav-link <% if @tab == "projects"%>active<% end %>" href="/home/projects">Projects</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane show active">
+            <div class="adapt-flex-table mt-2 mb-2" style="flex: 0 0 auto;">
+              <div class="adapt-flex-row">
+                <div class="adapt-flex-col" style="flex: 2 1 0; justify-content: center;">
+                  <form action="<%= @context[:path] %>" method="get" class="form form-horizontal adapt-flex-row" style="align-items: center;">
+                    <div class="input-group"  style="width: 12rem;">
+                    <input type="text" class="form-control" name="search" value="<%= @context[:params]['search'] || '' %>">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                    <div class="ms-2">
+                      <% if @context[:content_list].length == 0 %>
+                        No items.
+                      <% else %>
+                        <%= @context[:content_list].length %> item<%= @context[:content_list].length != 1 ? 's' : '' %>
+                      <% end %>
+                    </div>
+                  </form>
+                </div>
+                <div class="adapt-flex-col" style="flex: 2 1 0;">
+                  <div class="adapt-flex-row" style="align-items: center;">
+                    <span class="me-2">Order by: </span>
+                    <div class="btn-group">
+                      <% if @sort_column != 'title' %>
+                        <a class="btn btn-outline-primary" href="/home/<%= @tab %>?sort-column=title&sort-direction=ascending">Title</a>
+                      <% else %>
+                        <a class="btn btn-success" disabled>Title</a>
+                      <% end %>
+                      <% if @sort_column != 'created' %>
+                        <a class="btn btn-outline-primary" href="/home/<%= @tab %>?sort-column=created&sort-direction=descending">Recently created</a>
+                      <% else %>
+                        <a class="btn btn-success" disabled>Recently created</a>
+                      <% end %>
+                      <% if @sort_column != 'last_updated' %>
+                        <a class="btn btn-outline-primary" href="/home/<%= @tab %>?sort-column=last_updated&sort-direction=descending">Recently updated</a>
+                      <% else %>
+                        <a class="btn btn-success" disabled>Recently updated</a>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+                <div class="adapt-flex-col" style="flex: 1 1 0; align-items: flex-end;">
+                  <% if !@context[:session].nil? && @context[:session]['can_edit'] %>
+                    <div class="btn-toolbar">
+                      <a class="btn btn-outline-secondary" href="/add/<%= @content_type['id'] %>?return_path=<%= @context[:path] %>">
+                        <span class="bi bi-plus"></span> 
+                        Add <%= "aeiou".include?(@content_type['noun'][0].downcase) ? 'an' : 'a' %> <%= @content_type['noun'] %>
+                      </a>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            <div class="adapt-flex-table -resizable -bordered" style="height: 30rem;">
+              <div class="adapt-flex-table-header">
+                <div class="adapt-flex-row">
+                  <div class="adapt-flex-col" style="flex: 0 0 2rem;"></div>
+                  <div class="adapt-flex-col">
+                    <%= include_column_title 'Title', 'title' %>
+                  </div>
+                  <div class="adapt-flex-col">
+                    <%= include_column_title 'Author', 'author' %>
+                  </div>
+                  <div class="adapt-flex-col">
+                    <%= include_column_title 'Created', 'created' %>
+                  </div>
+                  <div class="adapt-flex-col">
+                    <%= include_column_title 'Updated', 'last_updated' %>
+                  </div>
+                </div>
+              </div>
+              <div class="adapt-flex-table-body" style="height: 10rem">
+                <% @context[:content_list].each_with_index do |item, index| %>
+                  <div class="adapt-flex-row">
+                    <div class="adapt-flex-col" style="flex: 0 0 2rem;"><%= index + 1 %></div>
+                    <div class="adapt-flex-col"><a href="/content/<%= item['id'] %>"><%= item['title'] %></a></div>
+                    <div class="adapt-flex-col"><%= item['author'] %></div>
+                    <div class="adapt-flex-col" data-renderer="format-date"><%= item['created'] %></div>
+                    <div class="adapt-flex-col" data-renderer="format-date"><%= item['last_updated'] %></div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <%= include_partial "footer" %>
+    <script>
+      renderDates();
+    </script>
+  </body>
+</html>

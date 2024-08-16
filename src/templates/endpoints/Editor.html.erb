@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= include_partial "head" %>
+  </head>
+  <body data-bs-theme="dark" class="d-flex flex-column" style="height: 100vh;">
+    <%= include_partial "page-header" %>
+    <form action="/<%=  @context[:endpoint_name] %>/<%= @data[:content]["id"] %>" 
+          class="full-height-flex" 
+          method="post">
+      <input type="hidden" name="_method" value="<% if @context[:endpoint_name] != 'add' %>post<% else %>put<% end %>">
+      <input type="hidden" name="return_path" value="<%= @data[:return_path] %>">
+      <div style="flex: 0 0 auto;" class="mt-2">
+        <div class="adapt-grid">
+          <div class="adapt-grid-row -gutter-1 mb-2 align-items-center">
+            <div class="adapt-flex-col" style="flex: 0 0 3rem;">
+              ID
+            </div>
+            <div class="adapt-flex-col" style="flex: 1 1 0;">
+              <input type="text" 
+                      name="id" 
+                      class="form-control" 
+                     <% if @context[:endpoint_name] != 'add' %> readonly <% else %><% end %>
+                      value="<%= @data[:content]["id"] %>">
+            </div>
+            <div class="adapt-flex-col" style="flex: 0 0 3rem;">
+              Title
+            </div>
+            <div class="adapt-flex-col" style="flex: 1 1 0;">
+              <input type="text" name="title" class="form-control" value="<%= @data[:content]["title"] %>">
+            </div>
+            <div class="adapt-flex-col" style="flex: 0 0 4rem;">
+              Author
+            </div>
+            <div class="adapt-flex-col" style="flex: 1 1 0;">
+              <input type="text" name="author" class="form-control" value="<%= @data[:content]["author"] %>">
+            </div>
+            <div class="adapt-flex-col" style="flex: 0 0 3rem;">
+              Type
+            </div>
+            <div class="adapt-flex-col" style="flex: 0 0 auto;">
+              <input type="text" name="content_type" class="form-control" style="width: 5rem;" value="<%= @data[:content_type]["id"] %>">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="split-body">
+        <input name="method" hidden value="put">
+        <div class="col1">
+          <textarea id="content-field" name="content" class="form-control" rows="1" ><%= @data[:content]["content"] %></textarea>
+        </div>
+        <div class="col2">
+          <div id="mdpreview" class="markdown-preview" ></div>
+        </div>
+      </div>
+      <div style="flex: 0 0 auto; display: flex; flex-direction: row; align-items: center; justify-content: center; margin-top: 1rem;">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a class="btn btn-danger ms-2" href="<%= @data[:return_path] %>">Cancel</a>
+      </div> 
+      <div class="alert alert-info" style="flex: 0 0 auto; text-align: center; justify-content: center; margin-top: 1rem;">
+        Will return to <code><%= @data[:return_path] %></code> after Saving or Canceling.
+      </div>
+   
+    </form>
+    <%= include_partial "footer" %>
+    <script>
+      function autoheightTextarea(id) {
+        const element = document.getElementById(id);
+        element.style.height = 'auto';
+        let lastHeight = element.style.height;
+        let lastScrollHeight = element.scrollHeight;
+        // console.log('INITIAL', lastHeight, lastScrollHeight);
+        function updateTextareaHeight() {
+          console.log('before', element.style.height, element.scrollHeight);
+
+          element.style.height = `${element.scrollHeight}px`;
+          console.log('after', element.style.height, element.scrollHeight);
+        }
+        updateTextareaHeight();
+        element.addEventListener('keydown', () => {
+          updateTextareaHeight();
+        });
+      }
+
+      // autoheightTextarea('content-field');
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@13.0.2/lib/marked.umd.min.js"></script>
+    <script>
+      function renderPreview(sourceId, targetId) {
+        const sourceElement = document.getElementById(sourceId);
+        if (!sourceElement) {
+          console.error(`No preview element "${sourceId}"`)
+          return;
+        }
+
+        const previewElement = document.getElementById(targetId);
+        if (!previewElement) {
+          console.error(`No preview element "${targetId}"`)
+          return;
+        }
+
+        previewElement.innerHTML = marked.parse(sourceElement.value)
+      }
+
+      function startPreviewListener(sourceId, targetId) {
+        renderPreview(sourceId, targetId);
+
+        const sourceElement = document.getElementById(sourceId);
+
+        sourceElement.addEventListener('input', () => {
+          renderPreview(sourceId, targetId);
+        });
+      }
+
+      startPreviewListener('content-field', 'mdpreview');
+    </script>
+  </body>
+</html>

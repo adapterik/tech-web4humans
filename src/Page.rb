@@ -36,7 +36,6 @@ class Page
     template = ERB.new erb
     template.result binding
   end
-
   
   def include_markdown(file_name)
     dir = File.dirname(File.realpath(__FILE__))

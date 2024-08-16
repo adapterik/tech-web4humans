@@ -12,13 +12,11 @@
 		"vscode": {
 			"extensions": [
 				"esbenp.prettier-vscode",
-				"ms-vscode.vs-keybindings",
-				"pjmbox.xcode-keybindings-mac-win-linux",
-				"vscodevim.vim",
 				"ms-azuretools.vscode-docker",
 				"Shopify.ruby-lsp",
 				"aliariff.vscode-erb-beautify",
-				"yy0931.vscode-sqlite3-editor"
+				"yy0931.vscode-sqlite3-editor",
+				"shd101wyy.markdown-preview-enhanced"
 			]
 		}
 	}

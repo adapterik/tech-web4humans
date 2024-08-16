@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= include_partial "head" %>
+  </head>
+  <body data-bs-theme="dark" class="d-flex flex-column" style="height: 100vh;">
+    <%= include_partial "page-header" %>
+    <div class="article flex-grow-1 overflow-y-auto">
+      <%= include_part "signin-intro" %>
+      <div class="adapt-well">
+        <form method="post" action="/authenticate">
+          <input type="hidden" name="_method" value="post">
+          <input type="hidden" name="page" value="<%= @context[:params]["page"] %>">
+          <div class="container">
+            <div class="row gy-2 pb-2">
+              <div class="col-2">
+                Username
+              </div>
+              <div class="col">
+                <input name="username" type="text" required minlength="2" maxlength="25">
+              </div>
+            </div>
+            <div class="row gy-2 pb-4">
+              <div class="col-2">
+                Password
+              </div>
+              <div class="col">
+                <input name="password" type="password" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <button type="submit" class="btn btn-primary">
+                  Sign in
+                </button>
+                <a class="btn btn-danger" href="/">
+                  Cancel
+                </a>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <% if @context[:params]['return-path'].length > 0 %>
+        <div class="alert alert-warning mt-4">
+          After signing in, your browser will be returned to <b><%= @context[:params]['return-path'] %></b>.
+        </div>
+      <% end %>
+    </div>
+    <%= include_partial "footer" %>
+  </body>
+</html>

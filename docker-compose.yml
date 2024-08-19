@@ -12,6 +12,7 @@ services:
     volumes:
       - .:/usr/src/app
     environment:
-      - APP_ENV=$APP_ENV
+      - APP_ENV=${APP_ENV:-production}
+      - OWNER_PASSWORD=${OWNER_PASSWORD:?The OWNER_PASSOWRD environment variable is required}
     # entrypoint:
     #   - bash

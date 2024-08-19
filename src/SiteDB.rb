@@ -28,7 +28,8 @@ class SiteDB
   def create_session(user_id) 
     session_id = SecureRandom.uuid
     now = Time.now.to_i
-    @db.execute 'insert into auth_sessions (id, user_id, created, expires) values (?, ?, ?, ?)', [session_id, user_id, now, now]
+    expires = now + 60 * 60 * 24 * 14
+    @db.execute 'insert into auth_sessions (id, user_id, created, expires) values (?, ?, ?, ?)', [session_id, user_id, now, expires]
     session_id
   end
 
@@ -197,7 +198,19 @@ class SiteDB
   end
 
   def get_site()
-    record = db.execute 'select * from site'
+    record = @db.execute 'select * from site'
     return record[0]
+  end
+
+  # openid auth
+  
+  def get_openid_providers()
+     result = @db.execute 'select * from openid_providers'
+     result
+  end
+
+  def get_openid_provider(provider_id)
+    result = @db.execute 'select * from openid_providers where id = ?', [provider_id]
+    result[0]
   end
 end

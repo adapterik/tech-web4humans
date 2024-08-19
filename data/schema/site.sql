@@ -117,17 +117,44 @@ insert into content_status (id, description) values ('draft', 'A content item no
 insert into content_status (id, description) values ('published', 'A content item that may appear in the site'),
 insert into content_status (id, description) values ('retracted', 'A content item which was published, but now is no longer'),
 
-insert into content (id, title, content, author, created, last_updated,  content_type)
-VALUES
-('home', 
-'What is in a name? What is in this name?\n' ||
-'\n' ||
- 'My first memory of "Adaptations" was that it captured my feeling that the web - and computers in general - should help us adapt to our environment. In other words, just as a species "adapts" to a change in environment through biological evolution, we adapt to changes in our environment through technological evolution.\n' ||
- '\n'  ||
- 'And our small part of that is using the web to improve our lives in meaningful, beneficial ways.\n' ||
- '' ||
-'Hmm, well that is all well and good, but it doesn\'t sound like a profitable approach.' ||
-'\n' ||
-So, while making money is the focus, we can adapt this approach to simply being user-focused in whatever role you have in web technology.
+-- insert into content (id, title, content, author, created, last_updated,  content_type)
+-- VALUES
+-- ('home', 
+-- 'What is in a name? What is in this name?\n' ||
+-- '\n' ||
+--  'My first memory of "Adaptations" was that it captured my feeling that the web - and computers in general - should help us adapt to our environment. In other words, just as a species "adapts" to a change in environment through biological evolution, we adapt to changes in our environment through technological evolution.\n' ||
+--  '\n'  ||
+--  'And our small part of that is using the web to improve our lives in meaningful, beneficial ways.\n' ||
+--  '' ||
+-- 'Hmm, well that is all well and good, but it doesn\'t sound like a profitable approach.' ||
+-- '\n' ||
+-- So, while making money is the focus, we can adapt this approach to simply being user-focused in whatever role you have in web technology.
 
-But ... when our focus changes to acting with meaning, we can return to our origins and begin again to create web tools, techology, information, experiences to help our fellow humans adapt to changes in our poltical, scientific, economic, social environment.insert into content (id, title, content, author, created
+-- But ... when our focus changes to acting with meaning, we can return to our origins and begin again to create web tools, techology, information, experiences to help our fellow humans adapt to changes in our poltical, scientific, economic, social environment.
+
+-- insert into content (id, title, content, author, created
+
+create table openid_providers (
+    id text not null,
+    name text not null,
+    client_id text not null,
+    client_secret text not null,
+
+    primary key (id)
+);
+
+insert into openid_providers (id, name, client_id, client_secret)
+values ('github', 'GitHub', 'Ov23lirMG7HZueCTG6O6', 'c90bf129056d801967b75d5e619ff2989495cc8a')
+
+create table user_openid_auth (
+    user_id text not null,
+    openid_provider_id text not null,
+
+    provider_user_id text not null,
+
+    primary key (user_id, openid_provider_id),
+
+    foreign key (user_id) references users (id),
+    foreign key (openid_provider_id) references openid_providers (id)
+
+)

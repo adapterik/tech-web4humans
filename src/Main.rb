@@ -30,6 +30,8 @@ class Main
     # @site = load_json('site')
     # @site_map = load_json('site-map')
     @site_db =  SiteDB.new()
+
+    @owner_password = ENV['OWNER_PASSWORD']
   end
 
   def load_json(path)
@@ -97,7 +99,8 @@ class Main
       :params => params,
       # need?
       :endpoint_name => endpoint_name,
-      :handler_def => handler_def
+      :handler_def => handler_def,
+      :owner_password =>  @owner_password
     }
 
     endpoint_class = handler_def['class']

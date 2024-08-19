@@ -26,7 +26,7 @@
         <% else %>
           <form action="/authenticate" method="post">
             <input type="hidden" name="_method" value="delete">
-            <button class="btn btn-text" type="submit">
+            <input type="hidden" name="return-path" value="<%= @context[:path] %>"> <button class="btn btn-text" type="submit">
               <input type="text" value="" name="dummy" style="display: none;">
               sign out <b><%= @context[:session]["user_id"] %></b>
             </button>

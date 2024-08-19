@@ -78,9 +78,12 @@ form textarea {
 }
 
 .markdown-preview {
-    background-color: rgba(100, 100, 100, 1);
+    background-color: rgba(50, 50, 50, 1);
     flex: 1 1 0;
     overflow-y: auto;
+    border: 1px dashed white;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
 }
 
 /*
@@ -217,4 +220,20 @@ General wrapper style for content area
 
 .adapt-well + p {
     padding-top: 1rem;
+}
+
+/* EDITOR */
+
+.markdown-preview {
+
+}
+
+.markdown-rendered blockquote {
+    background-color: rgba(100, 100, 100, 0.1);
+    margin-left: 1rem;
+}
+
+.markdown-preview blockquote {
+    background-color: rgba(100, 100, 100, 0.1);
+    margin-left: 1rem;
 }

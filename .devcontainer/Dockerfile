@@ -1,7 +1,9 @@
 FROM docker.io/ruby:3.4.0-preview1-alpine3.20
 
 # Add support for nio4r, a transitive dependency from puma
-RUN apk update && apk upgrade --available && apk add build-base ruby-dev linux-headers make git nodejs npm openssh
+RUN apk update && apk upgrade --available && apk add build-base ruby-dev linux-headers make git nodejs npm openssh bash
+
+# RUN apk update && apk upgrade --available && apk add build-base ruby-dev linux-headers make bash
 
 # throw errors if Gemfile has been modified since Gemfile.lock
 # RUN bundle config --global frozen 1
@@ -14,4 +16,4 @@ RUN apk update && apk upgrade --available && apk add build-base ruby-dev linux-h
 
 EXPOSE 3000
 
-ENTRYPOINT ["bash"]
+ENTRYPOINT ["bash", "-c"]

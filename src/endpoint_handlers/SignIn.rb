@@ -17,39 +17,11 @@ class SignIn < EndpointHandler
   end
 
   def handle_get()
-    # tab = @context[:arguments][0]
-
-    # content_type_id = case tab
-    # when 'pages' 
-    #   'page'
-    # when 'articles' 
-    #   'article'
-    # when 'blog'
-    #   'blog'
-    # when 'thoughts' 
-    #   'thought'
-    # when 'projects' 
-    #   'project'
-    # end
-
-    # # Here we fetch the associated item
-    # content = @site_db.get_content(@content_id)
-  
-    # # If we can't find the content, we set the content to the "Not Found" content.
-    # if content.nil?
-    #     original_content_id = @content_id
-    #     content_id = 'not_found'
-    #     content = @site_db.get_content(content_id)
-    #     content[:original_content_id] = original_content_id
-    #     content_list = []
-    # else
-    #     content_list = @site_db.list_content(content_type_id)
-    #     puts 'HMM'
-    #     puts content_type_id
-    #     puts content_list.length
-    # end
-
-    # @content_type = content_type_id
+    # If have auth session, just return from whence we came...
+    
+    # Otherwise, we ask the user how they want to sign in:
+    # 
+    providers = @site_db.get_openid_providers
 
     # We now abstract the "page" to be anything that affects the overall 
     # and generic information about the page.
@@ -71,9 +43,8 @@ class SignIn < EndpointHandler
 
     @context.merge!({
       site: @site,
-      # content_id: @content_id,
       content: content,
-      # content_list: content_list,
+      providers: providers,
       env: {
         request: request
       },

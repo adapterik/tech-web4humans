@@ -1,3 +1,0 @@
-# Adapt
-
-Adapt or die.

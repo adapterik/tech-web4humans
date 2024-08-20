@@ -4,3 +4,4 @@ node_modules/
 _old
 *.crt
 *.key
+__attic

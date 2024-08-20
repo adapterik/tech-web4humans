@@ -113,8 +113,10 @@
       </div>
     </div>
     <%= include_partial "footer" %>
-    <script>
-      renderDates();
+     <script>
+      amd.require(['js/fmt'], (fmt) => {
+        fmt.renderDates();
+      })
     </script>
   </body>
 </html>

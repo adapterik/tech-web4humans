@@ -1,3 +1,0 @@
-# Attitude
-
-Got it?

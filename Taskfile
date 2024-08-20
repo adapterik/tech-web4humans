@@ -34,7 +34,6 @@ function start-dev-server {
     OWNER_PASSWORD="${OWNER_PASSWORD}" HOME_DIR=`pwd` bundle exec guard -i
 }
 
-
 function help {
     echo "$0 <task> <args>"
     echo "Runs the tasks listed below."

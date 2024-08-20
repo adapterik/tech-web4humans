@@ -1,3 +1,0 @@
-# Transmissions
-
-How to communicate.

@@ -21,7 +21,8 @@
 				"Shopify.ruby-lsp",
 				"aliariff.vscode-erb-beautify",
 				"yy0931.vscode-sqlite3-editor",
-				"shd101wyy.markdown-preview-enhanced"
+				"shd101wyy.markdown-preview-enhanced",
+				"william-voyek.vscode-nginx"
 			]
 		}
 	}

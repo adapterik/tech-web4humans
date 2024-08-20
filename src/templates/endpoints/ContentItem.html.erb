@@ -16,6 +16,7 @@
           <li class="nav-item"><a class="nav-link" href="/home/<%= @context[:content_type]['id'] %>s">
             <span class="bi bi-arrow-90deg-up"></span>
             Back to  <%= @context[:content_type]['noun'] %>s Index</a></li>
+          <% if can_edit? %>
           <li class="nav-item">
             <a class="nav-link" 
                href="/edit/<%= @context[:content_id] %>?return_path=<%= @context[:path] %>">
@@ -30,6 +31,7 @@
                 Delete this <%= @context[:content_type]['noun'] %>
               </a>
             </li>
+          <% end %>
         </ul>
       </div>
     </div>

@@ -1,1 +1,0 @@
-mkcert -cert-file ./tools/proxy/contents/ssl/test.crt --key-file ./tools/proxy/contents/ssl/test.key tech.web4humans.com

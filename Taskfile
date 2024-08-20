@@ -4,19 +4,6 @@
 # PRIVATE
 #
 
-#
-# _run-dc name command...
-#
-# Runs docker compose with the given docker compose filename suffix with the given command arguments
-#
-function _run-dc {
-  docker compose -f "etc/docker-compose-${1}.yml" --project-directory "${PWD}" --project-name orcidlink run --rm orcidlink "${@:2}"
-}
-
-function _dc-up {
-  docker compose -f "etc/docker-compose-${1}.yml" --project-directory "${PWD}" --project-name orcidlink up
-}
-
 function _noop {
     echo "Not implemented yet"
 }
@@ -25,105 +12,28 @@ function _noop {
 # PUBLIC
 #
 
-function alias-me {
-    alias run="${PWD}/Taskfile"
+function enable-dev-cert {
+    mkcert -install
 }
 
-function install-plugins {
-	bash tools/deno/scripts/install-plugins.sh "${GH_TOKEN:?GH_TOKEN is required}"
+function disable-dev-cert {
+    mkcert -uninstall
 }
-
-function install-plugin {
-	bash tools/deno/scripts/install-plugin.sh "${1}" 
-}
-
-function git-info {
-    bash tools/deno/scripts/git-info.sh
-}
-
-function build-info {
-	bash tools/deno/scripts/build-info.sh
-}
-
-function prepare-build {
-    bash scripts/host/prepare-build.sh
-}
-
-function create-deploy {
-    bash scripts/host/create-deploy.sh
-}
-
-function build {
-    env DIR="${PWD}/vite-app" bash scripts/host/build.sh
-}
-
-function shell {
-    env DIR="${PWD}" bash scripts/host/shell.sh
-}
-
-function test {
-    env DIR="${PWD}/vite-app" bash scripts/host/test.sh
-}
-
-# 
-# Build
-#
-
-#
-# Sets up the project for either development or image-building
-#
-function setup-for-build-or-dev {
-    prepare-build
-    git-info
-    build-info
-    install-plugins
-    render-templates
-}
-
-#
-# Prepare a build for an image
-# After this is complete, everything will be in place for the image
-# to be built.
-#
-function build-kbase-ui {
-    setup-for-build-or-dev
-    build
-    create-deploy
-}
-
-#
-# Prepare project for development.
-# After this is complete, the repo is ready for live development
-#
-function dev-setup {
-    setup-for-build-or-dev
-}
-
-#
-# Tasks we need to run prior to commits, etc. 
-#
-
-function format {
-    _noop
-}
-
-function render-templates {
-    env DIR="${PWD}" ENV="${ENV:-ci}" DEFAULT_PATH="${DEFAULT_PATH}" bash tools/dockerize/scripts/render-templates.sh
-}
-
-# Optional dev tooling:
 
 function generate-dev-cert {
+    mkcert -cert-file ./tools/proxy/contents/ssl/test.crt --key-file ./tools/proxy/contents/ssl/test.key tech.web4humans.com
+
     env bash tools/make-dev-cert.sh
 }
 
 function remove-dev-cert {
-    rm tools/proxy/contents/ssl/*
+    rm ./tools/proxy/contents/ssl/*
 }
 
-function start-local-server {
-	docker compose up 
+function start-dev-server {
+    OWNER_PASSWORD="${OWNER_PASSWORD}" HOME_DIR=`pwd` bundle exec guard -i
 }
+
 
 function help {
     echo "$0 <task> <args>"

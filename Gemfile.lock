@@ -23,6 +23,8 @@ GEM
     json (2.7.2)
     kramdown (2.4.0)
       rexml
+    kramdown-parser-gfm (1.1.0)
+      kramdown (~> 2.0)
     language_server-protocol (3.17.0.3)
     listen (3.9.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -49,6 +51,7 @@ GEM
     rbs (3.5.2)
       logger
     rexml (3.2.6)
+    rouge (4.3.0)
     ruby-lsp (0.17.14)
       language_server-protocol (~> 3.17.0)
       prism (>= 0.29.0, < 0.31)
@@ -72,8 +75,10 @@ DEPENDENCIES
   guard-puma (= 0.8.1)
   htmlbeautifier (= 1.4.3)
   kramdown (= 2.4.0)
+  kramdown-parser-gfm (= 1.1)
   puma (= 6.4.2)
   rack (= 3.1.7)
+  rouge (= 4.3.0)
   ruby-lsp (= 0.17.14)
   simple_spark (= 1.0.12)
   sqlite3 (= 2.0.4)

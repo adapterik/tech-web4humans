@@ -5,6 +5,8 @@ gem 'puma', '6.4.2'
 gem 'rack', '3.1.7'
 gem 'simple_spark', '1.0.12'
 gem 'kramdown', '2.4.0'
+gem 'kramdown-parser-gfm', '1.1'
+gem 'rouge', '4.3.0'
 gem 'sqlite3', '2.0.4'
 
 group :development do

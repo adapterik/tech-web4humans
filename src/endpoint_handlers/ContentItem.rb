@@ -9,7 +9,7 @@ class ContentItem < EndpointHandler
   def include_content()
     template = ERB.new @context[:content]['content']
     fulfilled_content = template.result binding
-    rendered = Kramdown::Document.new(fulfilled_content).to_html
+    rendered = Kramdown::Document.new(fulfilled_content, :input => 'GFM', :syntax_highlighter => 'rouge').to_html
     set_rendered(@context[:content_id], rendered)
   end
 
@@ -51,7 +51,7 @@ class ContentItem < EndpointHandler
     })
 
     dir = File.dirname(File.realpath(__FILE__))
-    class_name = content['content_type'].capitalize
+    # class_name = content['content_type'].capitalize
     # path = "#{dir}/../templates/endpoints/#{class_name}.html.erb"
     path = "#{dir}/../templates/endpoints/ContentItem.html.erb"
     template = load_template(path)

@@ -1,13 +1,15 @@
 @import "common.css";
 
-/* html {
+html {
     height: -webkit-fill-available;
+    height: 100vh;
+    height: 100dvh;
 }
 
 body {
     height: -webkit-fill-available;
     height: 100vh;
-} */
+    height: 100dvh;
 
 .footer {
     padding: 0.5rem;

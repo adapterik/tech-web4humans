@@ -1,19 +1,25 @@
 @import "common.css";
 
+html {
+    height: 100vh;
+    height: -webkit-fill-available;
+}
+
 body {
     height: 100vh;
+    height: -webkit-fill-available;
 }
 
 .footer {
     padding: 0.5rem;
     text-align: center;
-    /*font-size: 120%;*/
 }
 
 .adaptations-container {
     display: flex;
     flex-direction: row;
 }
+
 .adaptations-letter {
     flex: 1 10;
     display: flex;

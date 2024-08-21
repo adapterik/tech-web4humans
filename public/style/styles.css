@@ -1,14 +1,13 @@
 @import "common.css";
 
-html {
+/* html {
     height: -webkit-fill-available;
-    height: 100vh;
 }
 
 body {
     height: -webkit-fill-available;
     height: 100vh;
-}
+} */
 
 .footer {
     padding: 0.5rem;
@@ -120,7 +119,7 @@ General wrapper style for content area
 
 .two-column-page .-col1 {
     /* flex: 1 1 0; */
-    flex: 1 1 500px;
+    flex: 0 0 700px;
     overflow-y: auto;
 }
 

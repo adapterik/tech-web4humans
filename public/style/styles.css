@@ -1,13 +1,13 @@
 @import "common.css";
 
 html {
-    height: 100vh;
     height: -webkit-fill-available;
+    height: 100vh;
 }
 
 body {
-    height: 100vh;
     height: -webkit-fill-available;
+    height: 100vh;
 }
 
 .footer {
@@ -62,8 +62,8 @@ a.adaptations-letter {
 }
 
 .split-body > .col1 {
-    /* flex: 0 0 50em; */
-    flex: 1 1 0;
+    flex: 0 0 50em;
+    /* flex: 1 1 0; */
 }
 
 .split-body > .col2 {
@@ -119,12 +119,14 @@ General wrapper style for content area
 }
 
 .two-column-page .-col1 {
-    flex: 1 1 0;
+    /* flex: 1 1 0; */
+    flex: 1 1 500px;
     overflow-y: auto;
 }
 
 .two-column-page .-col2 {
-    flex: 0 0 20rem;
+    /* flex: 0 0 20rem; */
+    flex: 1 1 0;
     overflow-y: auto;
 }
 

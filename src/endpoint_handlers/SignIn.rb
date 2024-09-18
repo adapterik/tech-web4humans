@@ -8,7 +8,7 @@ class SignIn < EndpointHandler
   end
 
   def include_part(part_content_id)
-    part = @site_db.get_content(part_content_id)
+    part = @site_db.get_content('part', part_content_id)
 
     template = ERB.new part['content']
     fulfilled_content = template.result binding

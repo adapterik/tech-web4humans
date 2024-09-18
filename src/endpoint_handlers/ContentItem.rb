@@ -3,7 +3,8 @@ require_relative './EndpointHandler'
 class ContentItem < EndpointHandler
   def initialize(context, input)
     super(context, input)
-    @content_id = context[:arguments][0]
+    @content_type_id = context[:arguments][0]
+    @content_id = context[:arguments][1]
   end
 
   def include_content()
@@ -15,14 +16,13 @@ class ContentItem < EndpointHandler
 
   def handle_get()
     # Here we fetch the associated item
-    content = @site_db.get_content(@content_id)
+    content = @site_db.get_content(@content_type_id, @content_id)
 
-    content_type = @site_db.get_content_type content['content_type']
+    content_type = @site_db.get_content_type @content_type_id
     # If we can't find the content, we set the content to the "Not Found" content.
     if content.nil?
         original_content_id = @content_id
-        content_id = 'not_found'
-        content = @site_db.get_content(content_id)
+        content = @site_db.get_system_page 'not_found'
         content[:original_content_id] = original_content_id
     end
 

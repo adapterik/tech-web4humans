@@ -101,7 +101,7 @@
                 <% @context[:content_list].each_with_index do |item, index| %>
                   <div class="adapt-flex-row">
                     <div class="adapt-flex-col" style="flex: 0 0 2rem;"><%= index + 1 %></div>
-                    <div class="adapt-flex-col"><a href="/content/<%= item['id'] %>"><%= item['title'] %></a></div>
+                    <div class="adapt-flex-col"><a href="/content/<%= item['content_type'] %>/<%= item['id'] %>"><%= item['title'] %></a></div>
                     <div class="adapt-flex-col"><%= item['author'] %></div>
                     <div class="adapt-flex-col" data-renderer="format-date"><%= item['created'] %></div>
                     <div class="adapt-flex-col" data-renderer="format-date"><%= item['last_updated'] %></div>

@@ -19,8 +19,8 @@ class Editor < EndpointHandler
   # 
   
   def ensure_can_edit()
-     # Ensure authenticated session that can edit.
-     if @context[:session].nil?
+    # Ensure authenticated session that can edit.
+    if @context[:session].nil?
       raise ClientErrorUnauthorized.new
     end
     if @context[:session]["can_edit"] == 0
@@ -34,8 +34,10 @@ class Editor < EndpointHandler
   def handle_get()
     ensure_can_edit
 
+    content_type_id = @context[:arguments][0]
+
     # This allows the header to highlight the page being edited.
-    edited_content_id = @context[:arguments][0]
+    edited_content_id = @context[:arguments][1]
 
     return_path = @context[:params]['return_path']
 
@@ -50,10 +52,12 @@ class Editor < EndpointHandler
     # Here we set up a special context just for this 
     # endpoint
 
-    content = @site_db.get_content(edited_content_id)
+    content = @site_db.get_content content_type_id, edited_content_id
 
-    # TODO: the content type info can also be returned from query above,
-    content_type = @site_db.get_content_type(content['content_type'])
+    # TODO: the content type info can also be returned from query above
+    puts 'CONTENT TYPE?'
+    puts content_type_id
+    content_type = @site_db.get_content_type content_type_id
 
     @data = {
       :content_id => edited_content_id,

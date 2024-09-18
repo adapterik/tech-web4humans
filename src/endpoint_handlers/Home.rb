@@ -16,14 +16,18 @@ class Home < EndpointHandler
 
   def handle_get()
     # Here we fetch the associated item
-    content = @site_db.get_content(@content_id)
+    content = @site_db.get_system_page @content_id
 
     # If we can't find the content, we set the content to the "Not Found" content.
     if content.nil?
         original_content_id = @content_id
         content_id = 'not_found'
-        content = @site_db.get_content(content_id)
+        content = @site_db.get_system_page content_id
         content[:original_content_id] = original_content_id
+
+        puts 'NOT FOUND?'
+        puts @content_id
+        puts content_id
     end
 
     content_type = @site_db.get_content_type content['content_type']

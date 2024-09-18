@@ -39,7 +39,7 @@
                  <% if can_edit? %>
                   <li class="nav-item">
                     <a class="nav-link" 
-                      href="/edit/<%= @context[:content_id] %>?return_path=<%= @context[:path] %>">
+                      href="/edit/<%= @context[:content_type]['id'] %>/<%= @context[:content_id] %>?return_path=<%= @context[:path] %>">
                         <span class="bi bi-pencil"></span> 
                         Edit this <%= @context[:content_type]['noun'] %>
                     </a>

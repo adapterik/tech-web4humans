@@ -124,30 +124,43 @@ class SiteDB
     content_record[0]
   end
 
-  def get_content(content_id)
+  def get_content(content_type, content_id)
     query = "
       select 
         c.*, t.class, t.noun as noun
       from content c, content_types t 
       where 
         c.content_type = t.id and 
-        c.id = ?
+        c.content_type = ? and
+        c.id = ? 
     "
-    content_record = @db.execute query, [content_id]
+    content_record = @db.execute query, [content_type, content_id]
+    puts 'GET CONTENT'
+    puts content_type
+    puts content_id
     content_record[0]
   end
 
-  def delete_content(content_id)
+  def get_page(id)
+    get_content 'page', id
+  end
+
+  def get_system_page(id)
+    get_content 'system_page', id
+  end
+
+  def delete_content(content_type, content_id)
     query = "
       delete 
       from content
       where 
+        content_type = ? and
         id = ?
     "
-    @db.execute query, [content_id]
+    @db.execute query, [content_type, content_id]
   end
 
-  def update_content(content_id, changes)
+  def update_content(content_type, content_id, changes)
     # TODO: apply rules to fields
     
     title = changes["title"]
@@ -159,16 +172,13 @@ class SiteDB
     query = "
       update content
       set title = ?, content = ?, last_updated = ?, content_type = ?
-      where content.id = ?
+      where content.content_type = ? and content.id = ?
     "
-    @db.execute query, [title, content, last_updated, content_type, content_id]
+    @db.execute query, [title, content, last_updated, content_type, content_type, content_id]
   end
 
   def add_content(content_item)
-    # TODO: apply rules to fields
-    # 
 
-    
     id = content_item["id"]
     title = content_item["title"]
     content = content_item["content"]

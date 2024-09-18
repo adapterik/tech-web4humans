@@ -48,8 +48,6 @@ class AddContent < EndpointHandler
 
     content_type = @site_db.get_content_type(content_type_id)
 
-    # content = @site_db.get_content(edited_content_id)
-    # 
     content = {
       'id' => '',
       'title' => '',

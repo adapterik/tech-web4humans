@@ -5,3 +5,4 @@ _old
 *.crt
 *.key
 __attic
+LOCAL_ONLY_README.md

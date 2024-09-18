@@ -78,13 +78,13 @@ class HomeContentList < EndpointHandler
     end
 
     # Here we fetch the associated item
-    content = @site_db.get_content(@content_id)
-  
+    content = @site_db.get_content('system_page', @content_id)
+
     # If we can't find the content, we set the content to the "Not Found" content.
     if content.nil?
         original_content_id = @content_id
-        content_id = 'not_found'
-        content = @site_db.get_content(content_id)
+        # content_id = 'not_found'
+        content = @site_db.get_system_page 'not_found'
         content[:original_content_id] = original_content_id
         content_list = []
     else
@@ -93,6 +93,7 @@ class HomeContentList < EndpointHandler
         # 
         
         search = @context[:params]['search']
+        
         content_list = @site_db.search_content(content_type_id, sort, search)
     end
 

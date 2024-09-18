@@ -77,10 +77,7 @@ class EndpointHandler
   end
 
   def include_content()
-    puts 'HERE'
-    puts @context[:content_item]
     template = ERB.new @context[:content_item]['content']
-    puts 'THERE'
     fulfilled_content = template.result binding
     # rendered = Kramdown::Document.new(fulfilled_content, :syntax_highlighter => 'rouge').to_html
     rendered = Kramdown::Document.new(fulfilled_content).to_html

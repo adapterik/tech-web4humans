@@ -24,10 +24,6 @@ class Home < EndpointHandler
         content_id = 'not_found'
         content = @site_db.get_system_page content_id
         content[:original_content_id] = original_content_id
-
-        puts 'NOT FOUND?'
-        puts @content_id
-        puts content_id
     end
 
     content_type = @site_db.get_content_type content['content_type']

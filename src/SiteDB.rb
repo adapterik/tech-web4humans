@@ -135,9 +135,6 @@ class SiteDB
         c.id = ? 
     "
     content_record = @db.execute query, [content_type, content_id]
-    puts 'GET CONTENT'
-    puts content_type
-    puts content_id
     content_record[0]
   end
 

@@ -55,8 +55,6 @@ class Editor < EndpointHandler
     content = @site_db.get_content content_type_id, edited_content_id
 
     # TODO: the content type info can also be returned from query above
-    puts 'CONTENT TYPE?'
-    puts content_type_id
     content_type = @site_db.get_content_type content_type_id
 
     @data = {

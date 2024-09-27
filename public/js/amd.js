@@ -5,15 +5,17 @@ A globally loaded "module" providing a minimal AMD system.
 */
 
 class AMD {
-    constructor() {
+    constructor({config}) {
+        this.config = config;
+
         this.modules = {};
-        this.root = '';
+        this.root = config.root || '';
     }
 
     async addRunModule(name, fun) {
         const result = await fun();
         this.addModule(name, result);
-    }
+    }f
 
     addModule(name, value) {
        this.modules[name] = value;
@@ -26,6 +28,7 @@ class AMD {
     async fetchAndEvalDependency(dependency) {
         const url = new URL(window.location.origin);
         url.pathname = `${this.root}/${dependency}.js`;
+        console.log('pathmame?', url.pathname);
         const resource = await fetch(url);
         const jsCode = await resource.text();
         // For now, just code, but we'll abstract soon.
@@ -119,7 +122,8 @@ function initializeAMD(global) {
         return;
     }
 
-    global.amd = new AMD();
+    // global.amd = new AMD();
+    global.AMD = AMD;
 }
 
 initializeAMD(window);

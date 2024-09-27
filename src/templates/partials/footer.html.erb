@@ -3,7 +3,7 @@
     <!-- because, for some reason, bootstrap columns are not flexboxes -->
     <div class="col d-flex flex-column justify-content-center align-items-start">
       <div class="row">
-        <small>Copyright © 2024 Adaptations</small>
+        <small>Copyright © 2024 Web4Humans (Adaptations)</small>
       </div>
     </div>
     <div class="col">
@@ -13,10 +13,10 @@
             edit this <%= @context[:content]['content_type'] %>
           </a>
         <% end %>
-        <a class="btn btn-text" href="/page/contact">
+        <a class="btn btn-text" href="/content/page/contact">
           contact
         </a>
-        <a class="btn btn-text" href="/page/accessibility">
+        <a class="btn btn-text" href="/content/page/accessibility">
           accessibility          
         </a>
         <% if @context[:session].nil? %>

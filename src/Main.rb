@@ -68,6 +68,9 @@ class Main
       session = nil 
     end
 
+    @site_db.set_session session
+
+
     # Finally, we get the path component
     path = env['PATH_INFO']
 

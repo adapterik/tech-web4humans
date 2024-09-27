@@ -50,10 +50,6 @@ class SignIn < EndpointHandler
       },
     })
 
-    dir = File.dirname(File.realpath(__FILE__))
-    # class_name = content['content_type'].capitalize
-    path = "#{dir}/../templates/endpoints/SignIn.html.erb"
-    template = load_template(path)
-    template.result binding
+    load_endpoint_template().result binding
   end
 end

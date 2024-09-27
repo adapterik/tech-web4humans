@@ -12,30 +12,45 @@
         </div>
       </div>
       <div class="-col2" style="display: flex; flex-direction: column; align-items: flex-end;">
-        <ul class="nav flex-column" style="width: 14rem">
-          <li class="nav-item">
-            <a class="nav-link" href="/home/<%= @context[:content_type]['collective_noun'] %>">
-              <span class="bi bi-arrow-90deg-up"></span>
-              Back to  <%= @context[:content_type]['noun'] %>s Index
-            </a>
-          </li>
-          <% if can_edit? %>
-          <li class="nav-item">
-            <a class="nav-link" 
-               href="/edit/<%= @context[:content_type]['id'] %>/<%= @context[:content_id] %>?return_path=<%= @context[:path] %>">
-                 <span class="bi bi-pencil"></span> 
-                 Edit this <%= @context[:content_type]['noun'] %>
-            </a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" 
-                 href="/delete/<%= @context[:content_id] %>?return_path_success=/home/<%= @context[:content_type]['id'] %>s&return_path_cancel=<%= @context[:path] %>">
-                <span class="bi bi-trash"></span> 
-                Delete this <%= @context[:content_type]['noun'] %>
+
+        <div class="alert neutral">
+          <ul class="nav flex-column" style="width: 14rem">
+            <li class="nav-item">
+              <a class="nav-link" href="/home/<%= @context[:content_type]['collective_noun'] %>">
+                <span class="bi bi-arrow-90deg-up"></span>
+                Back to  <%= @context[:content_type]['noun'] %>s Index
               </a>
             </li>
-          <% end %>
-        </ul>
+            <% if can_edit? %>
+
+            <% if not @context[:content]['next_status'].nil? %>
+            <li class="nav-item">
+              <form action="/edit/<%= @context[:content_type]['id']%>/<%= @context[:content_id] %>" method="post">
+                <input type="text" hidden name="_method" value="patch">
+                <input type="text" hidden name="status_id" value="<%= @context[:content]['next_status'] %>">
+                <input type="text" hidden name="return_path" value="<%= @context[:path] %>">
+                <button class="btn btn-secondary"><%= @context[:content]['status_id'] %> -> <%= @context[:content]['next_status'] %></button>
+              </form>
+            </li>
+            <% end %> 
+
+            <li class="nav-item">
+              <a class="nav-link" 
+                href="/edit/<%= @context[:content_type]['id'] %>/<%= @context[:content_id] %>?return_path=<%= @context[:path] %>">
+                  <span class="bi bi-pencil"></span> 
+                  Edit this <%= @context[:content_type]['noun'] %>
+              </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" 
+                  href="/delete/<%= @context[:content_id] %>?return_path_success=/home/<%= @context[:content_type]['id'] %>s&return_path_cancel=<%= @context[:path] %>">
+                  <span class="bi bi-trash"></span> 
+                  Delete this <%= @context[:content_type]['noun'] %>
+                </a>
+              </li>
+            <% end %>
+          </ul>
+        </div>
       </div>
     </div>
     <%= include_partial "footer" %>

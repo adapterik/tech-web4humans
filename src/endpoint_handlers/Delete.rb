@@ -48,10 +48,7 @@ class Delete < EndpointHandler
       :return_path_cancel => return_path_cancel
     }
 
-    dir = File.dirname(File.realpath(__FILE__))
-    path = "#{dir}/../templates/endpoints/Delete.html.erb"
-    template = load_template(path)
-    template.result binding
+    load_endpoint_template().result binding
   end
 
   def handle_delete(form_data) 

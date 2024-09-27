@@ -5,10 +5,10 @@
   </head>
   <body data-bs-theme="dark" class="d-flex flex-column" style="height: 100vh;">
     <%= include_partial "page-header" %>
-    <form action="/<%=  @context[:endpoint_name] %>/<%= @data[:content]["id"] %>" 
+    <form action="/<%=  @context[:endpoint_name] %>/<%= @data[:content]["content_type"] %>/<%= @data[:content]["id"] %>" 
           class="full-height-flex" 
           method="post">
-      <input type="hidden" name="_method" value="<% if @context[:endpoint_name] != 'add' %>post<% else %>put<% end %>">
+      <input type="hidden" name="_method" value="<% if @context[:content].nil? %>post<% else %>put<% end %>">
       <input type="hidden" name="return_path" value="<%= @data[:return_path] %>">
       <div style="flex: 0 0 auto;" class="mt-2">
         <div class="adapt-grid">
@@ -20,7 +20,7 @@
               <input type="text" 
                       name="id" 
                       class="form-control" 
-                     <% if @context[:endpoint_name] != 'add' %> readonly <% else %><% end %>
+                     
                       value="<%= @data[:content]["id"] %>">
             </div>
             <div class="adapt-flex-col" style="flex: 0 0 3rem;">

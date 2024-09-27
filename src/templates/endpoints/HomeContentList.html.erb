@@ -30,7 +30,7 @@
         <div class="tab-pane show active">
             <div class="adapt-flex-table mt-2 mb-2" style="flex: 0 0 auto;">
               <div class="adapt-flex-row">
-                <div class="adapt-flex-col" style="flex: 2 1 0; justify-content: center;">
+                <div class="adapt-flex-col" style="flex: 1 1 0; justify-content: center;">
                   <form action="<%= @context[:path] %>" method="get" class="form form-horizontal adapt-flex-row" style="align-items: center;">
                     <div class="input-group"  style="width: 12rem;">
                     <input type="text" class="form-control" name="search" value="<%= @context[:params]['search'] || '' %>">
@@ -45,9 +45,9 @@
                     </div>
                   </form>
                 </div>
-                <div class="adapt-flex-col" style="flex: 2 1 0;">
-                  <div class="adapt-flex-row" style="align-items: center;">
-                    <span class="me-2">Order by: </span>
+                <div class="adapt-flex-col" style="flex: 2 1 0">
+                  <div class="adapt-flex-row" style="justify-content: center; align-items: center;">
+                    <span class="me-2">Order by</span>
                     <div class="btn-group">
                       <% if @sort_column != 'title' %>
                         <a class="btn btn-outline-primary" href="/home/<%= @tab %>?sort-column=title&sort-direction=ascending">Title</a>
@@ -55,14 +55,14 @@
                         <a class="btn btn-success" disabled>Title</a>
                       <% end %>
                       <% if @sort_column != 'created' %>
-                        <a class="btn btn-outline-primary" href="/home/<%= @tab %>?sort-column=created&sort-direction=descending">Recently created</a>
+                        <a class="btn btn-outline-primary" href="/home/<%= @tab %>?sort-column=created&sort-direction=descending">Time Created</a>
                       <% else %>
-                        <a class="btn btn-success" disabled>Recently created</a>
+                        <a class="btn btn-success" disabled>Time Created</a>
                       <% end %>
                       <% if @sort_column != 'last_updated' %>
-                        <a class="btn btn-outline-primary" href="/home/<%= @tab %>?sort-column=last_updated&sort-direction=descending">Recently updated</a>
+                        <a class="btn btn-outline-primary" href="/home/<%= @tab %>?sort-column=last_updated&sort-direction=descending">Time Updated</a>
                       <% else %>
-                        <a class="btn btn-success" disabled>Recently updated</a>
+                        <a class="btn btn-success" disabled>Time Updated</a>
                       <% end %>
                     </div>
                   </div>
@@ -79,7 +79,9 @@
                 </div>
               </div>
             </div>
-            <div class="adapt-flex-table -resizable -bordered" style="height: 30rem;">
+
+            
+                <div class="adapt-flex-table -resizable -bordered" style="height: 30rem;">
               <div class="adapt-flex-table-header">
                 <div class="adapt-flex-row">
                   <div class="adapt-flex-col" style="flex: 0 0 2rem;"></div>
@@ -94,21 +96,30 @@
                   </div>
                   <div class="adapt-flex-col">
                     <%= include_column_title 'Updated', 'last_updated' %>
+                  </div> 
+                  <div class="adapt-flex-col">
+                    <%= include_column_title 'Status', 'status' %>
                   </div>
                 </div>
               </div>
               <div class="adapt-flex-table-body" style="height: 10rem">
-                <% @context[:content_list].each_with_index do |item, index| %>
-                  <div class="adapt-flex-row">
-                    <div class="adapt-flex-col" style="flex: 0 0 2rem;"><%= index + 1 %></div>
-                    <div class="adapt-flex-col"><a href="/content/<%= item['content_type'] %>/<%= item['id'] %>"><%= item['title'] %></a></div>
-                    <div class="adapt-flex-col"><%= item['author'] %></div>
-                    <div class="adapt-flex-col" data-renderer="format-date"><%= item['created'] %></div>
-                    <div class="adapt-flex-col" data-renderer="format-date"><%= item['last_updated'] %></div>
-                  </div>
+                <% if @context[:content_list].length == 0 %>
+                  <div class="alert alert-info margin-top">Sorry, no <%= @content_type['noun'] %>s</div>
+                <% else %>
+                  <% @context[:content_list].each_with_index do |item, index| %>
+                    <div class="adapt-flex-row">
+                      <div class="adapt-flex-col" style="flex: 0 0 2rem;"><%= index + 1 %></div>
+                      <div class="adapt-flex-col"><a href="/content/<%= item['content_type'] %>/<%= item['id'] %>"><%= item['title'] %></a></div>
+                      <div class="adapt-flex-col"><%= item['author'] %></div>
+                      <div class="adapt-flex-col" data-renderer="format-date"><%= item['created'] %></div>
+                      <div class="adapt-flex-col" data-renderer="format-date"><%= item['last_updated'] %></div>
+                      <div class="adapt-flex-col"><%= item['status_id'] %></div>
+                    </div>
+                  <% end %>
                 <% end %>
               </div>
             </div>
+
         </div>
       </div>
     </div>

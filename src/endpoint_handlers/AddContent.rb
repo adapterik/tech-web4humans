@@ -20,8 +20,8 @@ class AddContent < EndpointHandler
   # 
   
   def ensure_can_edit()
-     # Ensure authenticated session that can edit.
-     if @context[:session].nil?
+    # Ensure authenticated session that can edit.
+    if @context[:session].nil?
       raise ClientErrorUnauthorized.new
     end
     if @context[:session]["can_edit"] == 0
@@ -64,13 +64,7 @@ class AddContent < EndpointHandler
       :return_path => return_path
     }
 
-    #
-    # 
-    # 
-    dir = File.dirname(File.realpath(__FILE__))
-    path = "#{dir}/../templates/endpoints/Editor.html.erb"
-    template = load_template(path)
-    template.result binding
+    load_endpoint_template('Editor').result binding
   end
 
   def handle_post()
@@ -89,7 +83,7 @@ class AddContent < EndpointHandler
       data['id'] = SecureRandom.uuid
     end
 
-    @site_db.add_content(data)
+    @site_db.add_content data
 
     # content = @site_db.get_content(data['id'])
 

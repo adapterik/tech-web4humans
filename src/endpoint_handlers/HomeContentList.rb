@@ -83,24 +83,17 @@ class HomeContentList < EndpointHandler
     # If we can't find the content, we set the content to the "Not Found" content.
     if content.nil?
         original_content_id = @content_id
-        # content_id = 'not_found'
         content = @site_db.get_system_page 'not_found'
         content[:original_content_id] = original_content_id
         content_list = []
     else
         sort = [@sort_column, @sort_direction]
-        # content_list = @site_db.list_content(content_type_id, sort)
-        # 
-        
         search = @context[:params]['search']
-        
         content_list = @site_db.search_content(content_type_id, sort, search)
     end
 
     @content_type_id = content_type_id
-
     @content_type = @site_db.get_content_type content_type_id
-    
 
     # We now abstract the "page" to be anything that affects the overall 
     # and generic information about the page.
@@ -126,10 +119,6 @@ class HomeContentList < EndpointHandler
       },
     })
 
-    dir = File.dirname(File.realpath(__FILE__))
-    # class_name = content['content_type'].capitalize
-    path = "#{dir}/../templates/endpoints/HomeContentList.html.erb"
-    template = load_template(path)
-    template.result binding
+    load_endpoint_template().result binding
   end
 end

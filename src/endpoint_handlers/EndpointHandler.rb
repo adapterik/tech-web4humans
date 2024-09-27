@@ -18,6 +18,7 @@ class EndpointHandler
     @data = {}
     @site = {}
     @site_db =  SiteDB.new()
+    @site_db.set_session context[:session]
   end
   
   def set_header(name, value)
@@ -34,6 +35,13 @@ class EndpointHandler
     file.close
     @@file_cache[path] = data
     data
+  end 
+  
+  def load_endpoint_template(name=nil)
+    template_name = name.nil? ? self.class.name : name
+    dir = File.dirname(File.realpath(__FILE__))
+    path = "#{dir}/../templates/endpoints/#{template_name}.html.erb"
+    load_template path
   end
 
   def load_template(path)

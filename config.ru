@@ -7,6 +7,7 @@ require 'rack'
 
 use Rack::Static,
     :urls => [
+      "/modules",
       "/audio", "/css", "/style", "/downloads", "/ext", "/images",
       "/js", "/less", "/scripts", "/multimedia",
       "/favicon.ico", "/favicon.png"],

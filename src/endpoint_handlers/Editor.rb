@@ -64,26 +64,42 @@ class Editor < EndpointHandler
       :return_path => return_path
     }
 
-    dir = File.dirname(File.realpath(__FILE__))
-    path = "#{dir}/../templates/endpoints/Editor.html.erb"
-    template = load_template(path)
-    template.result binding
+    load_endpoint_template().result binding
   end
 
   def handle_post()
     ensure_can_edit
 
-    edited_content_id = @context[:arguments][0]
+    edited_content_type_id = @context[:arguments][0]
 
-    data = URI.decode_www_form(@input.gets).to_h
+    edited_content_id = @context[:arguments][1]
+
+    form_data = URI.decode_www_form(@input.gets).to_h
 
     # TODO: validate all data!
+    
+    if not form_data.has_key? '_method'
+      raise ClientError('Sorry, need a method')
+    end
 
-    @site_db.update_content(edited_content_id, data)
+    fake_method = form_data['_method']
+
+    case fake_method.downcase
+    when 'post'
+      @site_db.add_content form_data
+    when 'put'
+      @site_db.update_content edited_content_type_id, edited_content_id, form_data 
+    when 'patch'
+      @site_db.patch_content edited_content_type_id, edited_content_id, form_data 
+    else
+      raise ClientError('Sorry, only "put" and "post" supported')
+    end 
+
+   
 
     # content = @site_db.get_content(edited_content_id)
 
     # ['', 302, {'location' => "/#{content['content_type']}/#{edited_content_id}"}]
-    ['', 302, {'location' => data['return_path']}]
+    ['', 302, {'location' => form_data['return_path']}]
   end
 end

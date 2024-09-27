@@ -7,12 +7,17 @@ class SiteDB
     path = "#{dir}/../data/site.sqlite3"
     @path = path
     @db = open_db()
+    @session = nil
   end
 
   def open_db()
     db = SQLite3::Database.new @path
     db.results_as_hash = true
     db
+  end
+
+  def set_session(session)
+    @session = session
   end
 
   def get_user_auth(username, password)
@@ -93,18 +98,28 @@ class SiteDB
       order_by_clause += "order by #{column} #{direction}"
     end
 
-    where_clause = 'where c.content_type = ?'
+    where_clause = 'where c.content_type = ? and c.status_id = s.id'
     query_params = [content_type]
 
     if not search_text.nil?
       where_clause += ' and (c.content like ? or c.title like ?)'
       query_params.push("%#{search_text}%", "%#{search_text}%")
     end
+
+    # If we are authenticated, we see everything, otherwise, just published.
+    # Remember, authentication is only used for managing the site, so we can
+    # make this simplifying assumption. Otherwise, we could, with little more work,
+    # simply look at the user's authorization.
+    
+    if @session.nil?
+      where_clause += " and c.status_id = 'published'"
+    end
+    
     
     query = "
       select
-        c.*
-      from content c
+        c.*, s.description as status
+      from content c, content_status s
       #{where_clause}
       #{order_by_clause}
     "
@@ -160,6 +175,7 @@ class SiteDB
   def update_content(content_type, content_id, changes)
     # TODO: apply rules to fields
     
+    id = changes['id']
     title = changes["title"]
     content = changes["content"]
     content_type = changes["content_type"]
@@ -168,14 +184,48 @@ class SiteDB
       
     query = "
       update content
-      set title = ?, content = ?, last_updated = ?, content_type = ?
+      set id = ?, title = ?, content = ?, last_updated = ?, content_type = ?
       where content.content_type = ? and content.id = ?
     "
-    @db.execute query, [title, content, last_updated, content_type, content_type, content_id]
+    @db.execute query, [id, title, content, last_updated, content_type, content_type, content_id]
+  end
+
+
+  def patch_content(content_type, content_id, submitted_changes)
+
+    changes = []
+    params = []
+
+    field_white_list = ['status_id']
+
+    field_white_list.each do |name|
+      if submitted_changes.has_key? name
+        changes.push "#{name} = ?"
+        params.push submitted_changes[name]
+      end
+    end
+
+    if changes.length == 0
+      return
+    end
+
+    last_updated = (Time.now.to_f).to_i
+
+    changes.push 'last_updated = ?'
+    params.push last_updated
+
+    params.push content_type
+    params.push content_id
+      
+    query = "
+      update content
+      set #{changes.join ', '}
+      where content.content_type = ? and content.id = ?
+    "
+    @db.execute query, params
   end
 
   def add_content(content_item)
-
     id = content_item["id"]
     title = content_item["title"]
     content = content_item["content"]

@@ -73,7 +73,7 @@ at the container command line, enter:
 
 ```shell
 bundle install # first time running server
-OWNER_PASSWORD="xxx" HOME_DIR=`pwd` bundle exec guard -i
+OWNER_PASSWORD="abc123" HOME_DIR=`pwd` bundle exec guard -i
 ```
 
 where `"xxx"` is the password you wish to use for the built-in owner account.

@@ -70,24 +70,15 @@ class AddContent < EndpointHandler
   def handle_post()
     ensure_can_edit
 
-    # edited_content_id = @context[:arguments][0]
-
-    data = URI.decode_www_form(@input.gets).to_h
-
-    # content_id = data['id']
-
-    # TODO: validate all data!
-    # 
+    data = URI.decode_www_form(@input.gets).to_h 
     
     if data['id'].length == 0
       data['id'] = SecureRandom.uuid
     end
 
+   
     @site_db.add_content data
 
-    # content = @site_db.get_content(data['id'])
-
-    # ['', 302, {'location' => "/#{content['content_type']}/#{content['id']}"}]
     ['', 302, {'location' => "#{data['return_path']}"}]
   end
 end

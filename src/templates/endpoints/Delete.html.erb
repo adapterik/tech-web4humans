@@ -10,7 +10,7 @@
         Confirm deletion
       </div>
       <div class="card-body">
-        <form action="/delete/<%= @data[:content]["id"] %>" 
+        <form action="/delete/<%= @data[:content]['content_type'] %>/<%= @data[:content]['id'] %>" 
               class="full-height-flex" 
               method="post">
           <input type="hidden" name="_method" value="delete">

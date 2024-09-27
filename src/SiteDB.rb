@@ -192,7 +192,6 @@ class SiteDB
 
 
   def patch_content(content_type, content_id, submitted_changes)
-
     changes = []
     params = []
 
@@ -236,13 +235,13 @@ class SiteDB
 
     query = "
       insert into content 
-      (id, title, content, author, created, last_updated, content_type)
+      (id, title, content, author, created, last_updated, content_type, status_id)
       values
-      (?, ?, ?, ?, ?, ?, ?)
+      (?, ?, ?, ?, ?, ?, ?, 'draft')
     "
     @db.execute query, [id, title, content, author, created, last_updated, content_type]
 
-    get_content id
+    get_content content_type, id
   end
 
   def get_endpoint(name, arity)

@@ -19,7 +19,8 @@ class Delete < EndpointHandler
     ensure_can_edit
 
     # This allows the header to highlight the page being edited.
-    edited_content_id = @context[:arguments][0]
+    edited_content_type_id = @context[:arguments][0]
+    edited_content_id = @context[:arguments][1]
 
     return_path_success = @context[:params]['return_path_success']
     return_path_cancel = @context[:params]['return_path_cancel']
@@ -35,7 +36,7 @@ class Delete < EndpointHandler
     # Here we set up a special context just for this 
     # endpoint
 
-    content = @site_db.get_content(edited_content_id)
+    content = @site_db.get_content edited_content_type_id, edited_content_id
 
     # TODO: the content type info can also be returned from query above,
     content_type = @site_db.get_content_type(content['content_type'])
@@ -53,9 +54,10 @@ class Delete < EndpointHandler
 
   def handle_delete(form_data) 
     ensure_can_edit
-    content_id_to_delete = @context[:arguments][0]
+    content_type_id_to_delete = @context[:arguments][0]
+    content_id_to_delete = @context[:arguments][1]
 
-     @site_db.delete_content(content_id_to_delete)
+     @site_db.delete_content(content_type_id_to_delete, content_id_to_delete)
 
      ['', 302, {'location' => form_data['return_path']}]
   end
@@ -71,10 +73,10 @@ class Delete < EndpointHandler
 
     fake_method = form_data['_method']
     case fake_method.downcase
-      when 'delete'
-        handle_delete(form_data)
-      else 
-        raise ClientError('Sorry, only "delete" supported')
+    when 'delete'
+      handle_delete(form_data)
+    else 
+      raise ClientError('Sorry, only "delete" supported')
     end
   end
 

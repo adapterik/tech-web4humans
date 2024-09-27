@@ -28,7 +28,7 @@ To setup and start the server:
 
 ```shell
 bundle install
-OWNER_PASSWORD=xxx HOME_DIR=`pwd` bundle exec puma
+OWNER_PASSWORD=abc123 HOME_DIR=`pwd` bundle exec puma
 ```
 
 ### Running and Developing with a devcontainer (Docker)

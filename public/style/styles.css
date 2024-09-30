@@ -291,3 +291,18 @@ General wrapper style for content area
 .padding-top {
     padding-top: 16px;
 }
+
+/* status column */
+
+.status-draft {
+    color: orange;
+}
+
+.status-published {
+    color: green;
+}
+
+.status-retracted {
+    color: red;
+}
+

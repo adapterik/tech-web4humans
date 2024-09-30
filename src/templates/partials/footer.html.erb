@@ -8,17 +8,17 @@
     </div>
     <div class="col">
       <div class="btn-toolbar justify-content-end">
-        <% if false %>
-          <a class="btn btn-text" href="/edit/<%= @context[:content]['id'] %>" >
-            edit this <%= @context[:content]['content_type'] %>
-          </a>
-        <% end %>
         <a class="btn btn-text" href="/content/page/contact">
           contact
         </a>
         <a class="btn btn-text" href="/content/page/accessibility">
           accessibility          
         </a>
+        <% if can_manage? %>
+        <a class="btn btn-text" href="/manage">
+            manage site
+        </a>
+        <% end %>
         <% if @context[:session].nil? %>
           <a class="btn btn-text" href="/signin?return-path=<%= @context[:path] %>">
             sign in

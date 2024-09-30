@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head lang="en">
+    <%= include_partial "head" %>
+  </head>
+  <body data-bs-theme="dark" class="d-flex flex-column">
+    <%= include_partial "page-header" %>
+    <div class="article flex-grow-1 overflow-y-auto">
+      <%= include_content %>
+      <div class="adapt-well">
+        <div style="display: flex; flex-direction: row; align-items: center;">
+           <form action="/manage/remove_all_other_sessions" method="post"  style="flex: 0 0 auto;" class="mb-2">
+          <input hidden name="_method" value="delete">
+          <input hidden name="success_return_path" value="/manage">
+          <input hidden name="error_return_path" value="">
+          <button class="btn btn-primary">Remove All Other Sessions</button>
+        </form>
+          <div style="flex: 1 1 0;" class="ms-2">
+            Has the effect of logging <b>all <i>other</i> users</b> out.
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: row; align-items: center;">
+          <form action="/manage/remove_all_sessions" method="post" style="flex: 0 0 auto;">
+            <input hidden name="_method" value="delete">
+            <input hidden name="success_return_path" value="/">
+            <input hidden name="error_return_path" value="">
+            <button class="btn btn-primary">Remove All Sessions</button>
+          </form>
+          <div style="flex: 1 1 0;" class="ms-2">
+            Has the effect of logging <b>all users</b> out, including <i>yourself</i>, 
+            after which you'll be returned to the home page!
+          </div>
+        </div>
+      </div>
+    </div>
+    <%= include_partial "footer" %>
+  </body>
+</html>

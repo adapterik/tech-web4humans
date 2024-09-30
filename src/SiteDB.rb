@@ -42,6 +42,15 @@ class SiteDB
     @db.execute 'delete from auth_sessions where id = ?', [session_id]
   end
 
+  def remove_all_other_sessions(session_id)
+    @db.execute 'delete from auth_sessions where id != ?', [session_id]
+  end
+
+
+  def remove_all_sessions()
+    @db.execute 'delete from auth_sessions', []
+  end
+
   def get_session(session_id)
     query = "
       select 

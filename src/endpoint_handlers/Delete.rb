@@ -2,15 +2,6 @@ require_relative './EndpointHandler'
 
 class Delete < EndpointHandler
   
-  def ensure_can_edit()
-     # Ensure authenticated session that can edit.
-     if @context[:session].nil?
-      raise ClientErrorUnauthorized.new
-    end
-    if @context[:session]["can_edit"] == 0
-      raise ClientErrorForbidden.new
-    end
-  end
 
   #
   # The GET method displays the deletion form
@@ -39,7 +30,7 @@ class Delete < EndpointHandler
     content = @site_db.get_content edited_content_type_id, edited_content_id
 
     # TODO: the content type info can also be returned from query above,
-    content_type = @site_db.get_content_type(content['content_type'])
+    content_type = @site_db.get_content_type content['content_type']
 
     @data = {
       :content_id => edited_content_id,

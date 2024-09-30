@@ -113,7 +113,7 @@
                       <div class="adapt-flex-col"><%= item['author'] %></div>
                       <div class="adapt-flex-col" data-renderer="format-date"><%= item['created'] %></div>
                       <div class="adapt-flex-col" data-renderer="format-date"><%= item['last_updated'] %></div>
-                      <div class="adapt-flex-col"><%= item['status_id'] %></div>
+                      <div class="adapt-flex-col status-<%= item['status_id'] %>"><%= item['status_id'] %></div>
                     </div>
                   <% end %>
                 <% end %>

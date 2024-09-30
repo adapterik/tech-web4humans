@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%= include_partial "head" %>
+  </head>
+  <body data-bs-theme="dark" class="d-flex flex-column" style="height: 100vh;">
+    <%= include_partial "page-header" %>
+    <div class="card border-<%= @alert[:type] || 'info' %> m-4">
+      <div class="card-header">
+        <%= @alert[:title] %>
+      </div>
+      <div class="card-body">
+        <div class="card-text">
+          <%= @alert[:content] %>
+        </div>
+        <% if @alert[:return_path] %>
+          <a href="<%= @alert[:return_path] %>" class="btn btn-primary mt-4">Return to <code><%= @alert[:return_path] %></code></a>
+        <% end %>
+      </div>
+    </div>
+    <%= include_partial "footer" %>
+  </body>
+</html>

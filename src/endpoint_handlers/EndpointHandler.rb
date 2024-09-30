@@ -43,6 +43,13 @@ class EndpointHandler
     path = "#{dir}/../templates/endpoints/#{template_name}.html.erb"
     load_template path
   end
+  
+  def load_page_template(name)
+    template_name = name.nil? ? self.class.name : name
+    dir = File.dirname(File.realpath(__FILE__))
+    path = "#{dir}/../templates/pages/#{template_name}.html.erb"
+    load_template path
+  end
 
   def load_template(path)
     if @@template_cache.has_key? path
@@ -62,6 +69,28 @@ class EndpointHandler
   def can_edit?()
     # Ensure authenticated session that can edit.
     @context[:session] && @context[:session]["can_edit"] == 1
+  end 
+
+  def can_manage?()
+    # Ensure authenticated session that can edit.
+    @context[:session] && @context[:session]["can_manage"] == 1
+  end
+
+  def ensure_authorization(authorization)
+    if @context[:session].nil?
+      raise ClientErrorUnauthorized.new
+    end
+    if @context[:session][authorization] == 0
+      raise ClientErrorForbidden.new
+    end
+  end
+
+  def ensure_can_edit()
+    ensure_authorization('can_edit')
+  end
+
+  def ensure_can_manage()
+    ensure_authorization('can_manage')
   end
   
   def get_rendered(path)

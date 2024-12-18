@@ -22,7 +22,8 @@
 				"aliariff.vscode-erb-beautify",
 				"yy0931.vscode-sqlite3-editor",
 				"shd101wyy.markdown-preview-enhanced",
-				"william-voyek.vscode-nginx"
+				"william-voyek.vscode-nginx",
+				"alexcvzz.vscode-sqlite"
 			]
 		}
 	}

@@ -1,8 +1,8 @@
-FROM docker.io/ruby:3.4.0-preview1-alpine3.20
+FROM docker.io/ruby:3.4.0-rc1-alpine3.21
 
 # Packages db must be updated first, add os dependencies
 # required by Ruby gems (in this case just passenger)
-RUN apk update && apk upgrade --available && apk add build-base ruby-dev linux-headers make bash
+RUN apk update && apk upgrade --available && apk add build-base ruby-dev linux-headers make bash sqlite
 
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1

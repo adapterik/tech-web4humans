@@ -17,6 +17,9 @@ class ContentItem < EndpointHandler
   def handle_get()
     # Here we fetch the associated item
     content = @site_db.get_content(@content_type_id, @content_id)
+    if content.nil?
+      raise NotFound.new("Resource not found: #{@context[:path]}")
+    end
 
     content_type = @site_db.get_content_type @content_type_id
 

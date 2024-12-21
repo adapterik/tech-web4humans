@@ -7,7 +7,7 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    image: adaptations/adapt-site:dev
+    image: adaptations/tech-web4humans:dev
 
     container_name: adapt-site
     dns: 8.8.8.8
@@ -39,12 +39,12 @@ services:
     build:
       context: ../tools/proxy
     # there is only one proxy image, for local development, so just call it :dev
-    image: adaptations/adapt-proxy:dev
+    image: adaptations/tech-web4humans-proxy:dev
     depends_on:
       - adapt-site
     networks:
       - adapt-dev
-    container_name: kbase-ui-proxy
+    container_name: tech-web4humans-proxy
     # This is the whole point - to expose http & https on the host, mapped into
     # the docker network.
     ports:

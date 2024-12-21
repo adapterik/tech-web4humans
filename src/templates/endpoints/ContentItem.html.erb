@@ -16,9 +16,9 @@
         <div class="alert neutral">
           <ul class="nav flex-column" style="width: 14rem">
             <li class="nav-item">
-              <a class="nav-link" href="/home/<%= @context[:content_type]['collective_noun'] %>">
+              <a class="nav-link" href="/home/<%= @context[:content_type]['id'] %>">
                 <span class="bi bi-arrow-90deg-up"></span>
-                Back to  <%= @context[:content_type]['noun'] %>s Index
+                Back to  <%= @context[:content_type]['collective_noun'] %> Index
               </a>
             </li>
             <% if can_edit? %>

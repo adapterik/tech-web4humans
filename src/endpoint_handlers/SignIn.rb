@@ -3,7 +3,9 @@ require_relative './EndpointHandler'
 class SignIn < EndpointHandler
   def initialize(context, input)
     super(context, input)
-    @content_id = context[:arguments][0]
+    # should be "signin"
+    @content_id = context[:endpoint_name]
+    @content_type_id = 'system_page'
     @tab = @content_id
   end
 
@@ -17,6 +19,13 @@ class SignIn < EndpointHandler
   end
 
   def handle_get()
+    content = @site_db.get_content(@content_type_id, @content_id)
+    if content.nil?
+      raise NotFound.new("Resource not found: #{@context[:path]}")
+    end
+    content_type = @site_db.get_content_type @content_type_id
+
+
     # If have auth session, just return from whence we came...
     
     # Otherwise, we ask the user how they want to sign in:
@@ -29,9 +38,9 @@ class SignIn < EndpointHandler
       'title' => 'Sign In'
     }
 
-    content = {
-      'title' => 'Sign In'
-    }
+    # content = {
+    #   'title' => 'Sign In'
+    # }
 
     # Create the context object, which is a merging of
     # - the site, contemnt def, menu, etc. see below
@@ -41,9 +50,13 @@ class SignIn < EndpointHandler
       ui: ENV['HTTP_USER_AGENT']
     }
 
+    puts "HMM: #{content}"
+
     @context.merge!({
       site: @site,
+      content_id: @content_id,
       content: content,
+      content_type: content_type,
       providers: providers,
       env: {
         request: request

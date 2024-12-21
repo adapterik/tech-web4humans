@@ -4,7 +4,7 @@
     <%= include_partial "head" %>
   </head>
   <body data-bs-theme="dark" class="d-flex flex-column" style="height: 100vh;">
-    <%= include_partial "page-header" %>
+    <%= include_partial "system-page-header" %>
     <form action="/<%=  @context[:endpoint_name] %>/<%= @data[:content]["content_type"] %>/<%= @data[:content]["id"] %>" 
           class="full-height-flex" 
           method="post">

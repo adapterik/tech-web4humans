@@ -169,7 +169,7 @@ General wrapper style for content area
 .home {
     /* width: 50rem; */
     font-family: sans-serif;
-    margin: 1rem;
+    /* margin: 1rem; */
     flex: 1 1 0;
     display: flex; 
     flex-direction: column;
@@ -177,7 +177,11 @@ General wrapper style for content area
 
 .page-header {
     /* margin: 1rem; */
-    background-color: rgba(100, 100, 100, 1);
+    background-color: rgba(60, 60, 60, 1);
+    height: 5rem;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
 }
 
 

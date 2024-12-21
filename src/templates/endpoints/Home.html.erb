@@ -6,26 +6,30 @@
   <body data-bs-theme="dark" class="d-flex flex-column two-column-page">
     <%= include_partial "home-header" %>
     <div class="home flex-grow-1 overflow-y-auto">
-      <ul class="nav nav-pills justify-content-start fs-3" role="tablist">
-        <li class="nav-item" role="tab" <% if @tab == 'home'%>aria-selected<% end %>>
-          <a class="nav-link <% if @tab == 'home'%>active<% end %>" aria-current="pages" href="/home">Home</a>
-        </li>
-        <li class="nav-item" role="tab" <% if @tab == 'pages'%>aria-selected<% end %>>
-          <a class="nav-link <% if @tab == "pages"%>active<% end %>" aria-current="pages" href="/home/pages">Pages</a>
-        </li>
-        <li class="nav-item" role="tab" <% if @tab == 'articles'%>aria-selected<% end %>>
-          <a class="nav-link <% if @tab == "articles"%>active<% end %>" href="/home/articles">Articles</a>
-        </li>
-        <li class="nav-item" role="tab" <% if @tab == 'blog'%>aria-selected<% end %>>
-          <a class="nav-link <% if @tab == "blog"%>active<% end %>" href="/home/blog">Blog</a>
-        </li>
-        <li class="nav-item" role="tab" <% if @tab == 'thoughts'%>aria-selected<% end %>>
-          <a class="nav-link <% if @tab == "thoughts"%>active<% end %>" href="/home/thoughts">Thoughts</a>
-        </li>
-        <li class="nav-item" role="tab" <% if @tab == 'projects'%>aria-selected<% end %>>
-          <a class="nav-link <% if @tab == "projects"%>active<% end %>" href="/home/projects">Projects</a>
-        </li>
-      </ul>
+
+      <div class="page-header">
+        <ul class="nav nav-pills justify-content-start fs-3" role="tablist">
+          <li class="nav-item" role="tab" <% if @tab == 'home'%>aria-selected<% end %>>
+            <a class="nav-link <% if @tab == 'home'%>active<% end %>" aria-current="pages" href="/home">Home</a>
+          </li>
+          <li class="nav-item" role="tab" <% if @tab == 'page'%>aria-selected<% end %>>
+            <a class="nav-link <% if @tab == "page"%>active<% end %>" aria-current="pages" href="/home/page">Pages</a>
+          </li>
+          <li class="nav-item" role="tab" <% if @tab == 'article'%>aria-selected<% end %>>
+            <a class="nav-link <% if @tab == "article"%>active<% end %>" href="/home/article">Articles</a>
+          </li>
+          <li class="nav-item" role="tab" <% if @tab == 'blog'%>aria-selected<% end %>>
+            <a class="nav-link <% if @tab == "blog"%>active<% end %>" href="/home/blog">Blog</a>
+          </li>
+          <li class="nav-item" role="tab" <% if @tab == 'thought'%>aria-selected<% end %>>
+            <a class="nav-link <% if @tab == "thought"%>active<% end %>" href="/home/thought">Thoughts</a>
+          </li>
+          <li class="nav-item" role="tab" <% if @tab == 'project'%>aria-selected<% end %>>
+            <a class="nav-link <% if @tab == "project"%>active<% end %>" href="/home/project">Projects</a>
+          </li>
+        </ul>
+      </div>
+      
       <div class="tab-content mt-2" style="flex: 1 1 0; display: flex; flex-direction: column;">
         <div class="tab-pane show active" style="flex: 1 1 0; display: flex; flex-direction: column;">
           <div class="content-area -grid">

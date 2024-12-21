@@ -65,15 +65,15 @@ class HomeContentList < EndpointHandler
     end
 
     content_type_id = case @tab
-    when 'pages' 
+    when 'page' 
       'page'
-    when 'articles' 
+    when 'article' 
       'article'
     when 'blog'
       'blog'
-    when 'thoughts' 
+    when 'thought' 
       'thought'
-    when 'projects' 
+    when 'project' 
       'project'
     end
 

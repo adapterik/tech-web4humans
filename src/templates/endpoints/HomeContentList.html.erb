@@ -5,6 +5,7 @@
   </head>
   <body data-bs-theme="dark" class="d-flex flex-column">
     <%= include_partial "home-header" %>
+    <%# <div class="home flex-grow-1 d-flex flex-direction-column"> %>
     <div class="home flex-grow-1 overflow-y-auto">
        <ul class="nav nav-pills justify-content-start fs-3" role="tablist">
         <li class="nav-item" role="tab" <% if @tab == 'home'%>aria-selected<% end %>>
@@ -26,8 +27,8 @@
           <a class="nav-link <% if @tab == "projects"%>active<% end %>" href="/home/projects">Projects</a>
         </li>
       </ul>
-      <div class="tab-content">
-        <div class="tab-pane show active">
+      <div class="tab-content" style="flex: 1 1 0; display: flex; flex-direction: column;">
+        <div class="tab-pane show active" style="flex: 1 1 0; display: flex; flex-direction: column;">
             <div class="adapt-flex-table mt-2 mb-2" style="flex: 0 0 auto;">
               <div class="adapt-flex-row">
                 <div class="adapt-flex-col" style="flex: 1 1 0; justify-content: center;">
@@ -79,9 +80,7 @@
                 </div>
               </div>
             </div>
-
-            
-                <div class="adapt-flex-table -resizable -bordered" style="height: 30rem;">
+              <div class="adapt-flex-table -bordered" style="flex: 1 1 0;">
               <div class="adapt-flex-table-header">
                 <div class="adapt-flex-row">
                   <div class="adapt-flex-col" style="flex: 0 0 2rem;"></div>

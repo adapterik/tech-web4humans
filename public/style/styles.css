@@ -11,7 +11,7 @@ body {
 }
 
 .footer {
-    padding: 0.5rem;
+    /* padding: 0.5rem; */
     text-align: center;
 }
 
@@ -170,6 +170,9 @@ General wrapper style for content area
     /* width: 50rem; */
     font-family: sans-serif;
     margin: 1rem;
+    flex: 1 1 0;
+    display: flex; 
+    flex-direction: column;
 }
 
 .page-header {
@@ -206,11 +209,12 @@ General wrapper style for content area
 
 .adapt-flex-table-header {
     border-bottom: 1px dashed silver;
+    overflow-y: scroll;
 }
 
 .adapt-flex-table-body {
     flex: 1 1 0;
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .adapt-flex-col {
@@ -306,3 +310,11 @@ General wrapper style for content area
     color: red;
 }
 
+
+/* 
+
+Main layout 
+
+The site is primarl
+
+*/

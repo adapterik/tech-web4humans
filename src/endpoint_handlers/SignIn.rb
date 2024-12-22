@@ -50,8 +50,6 @@ class SignIn < EndpointHandler
       ui: ENV['HTTP_USER_AGENT']
     }
 
-    puts "HMM: #{content}"
-
     @context.merge!({
       site: @site,
       content_id: @content_id,

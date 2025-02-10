@@ -17,7 +17,7 @@
     <div class="-col2" style="display: flex; flex-direction: column; align-items: flex-end;">
 
       <div class="alert neutral">
-        <ul class="nav flex-column" style="width: 14rem">
+        <ul class="nav flex-column" style="width: 16rem">
           <li class="nav-item">
             <a class="nav-link" href="/home/<%= @context[:content_type]['id'] %>">
               <span class="bi bi-arrow-90deg-up"></span>
@@ -32,9 +32,9 @@
             <% end %>
           </li>
 
-          <hr>
-
           <% if can_edit? %>
+
+          <hr>
 
           <% if not @context[:content]['next_status'].nil? %>
           <li class="nav-item">

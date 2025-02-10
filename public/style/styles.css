@@ -49,15 +49,14 @@ a.adaptations-letter {
 }
 
 .reader article > h1 {
- padding-bottom: 0;
- margin-bottom: 0;
+   padding-bottom: 0;
+   margin-bottom: 0;
 }
 
 .reader article > div.subtitle {
-padding: 0.25rem 0 1 rem 0;
-font-style: italic;
+    padding: 0.25rem 0 1 rem 0;
+    font-style: italic;
 }
-
 
 .reader article > author {
     font-style: italic;
@@ -73,8 +72,8 @@ font-style: italic;
 }
 
 .reader article > .time-and-label > .time-label {
-   font-style: italic; 
-   margin-right: 0.75rem;
+ font-style: italic; 
+ margin-right: 0.75rem;
 }
 
 .reader article > .time-and-label > time {
@@ -82,11 +81,15 @@ font-style: italic;
 
 .reader article > footer {
     padding-top: 0.5rem;
-    text-align: center;
 }
 
 .reader article > footer > a {
     display: block;
+}
+
+.reader article > footer > a > .bi {
+    margin-right: 0.5rem;
+
 }
 
 .article {
@@ -151,13 +154,13 @@ General wrapper style for content area
     flex-direction: column;
     min-height: 0;
 }
- 
+
 .vertical-scroll-auto {
     overflow-y: auto;
 }
 
 .two-column-page {
-   
+
 }
 
 .two-column-page .-grid {

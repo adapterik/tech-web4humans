@@ -1,5 +1,4 @@
 .DS_Store
 *.crt
 *.key
-__attic
-LOCAL_ONLY_README.md
+__local_only

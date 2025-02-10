@@ -1,9 +1,11 @@
-version: '3.6'
 services:
   ruby:
     working_dir: /app
-    image: ruby:3.2.2-slim-bullseye
+    build:
+      dockerfile: ./Dockerfile 
     container_name: ruby
+    ports: 
+      - 3000:3000
     dns: 8.8.8.8
     volumes:
       - $DIR:/app

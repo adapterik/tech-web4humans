@@ -43,6 +43,11 @@ class EndpointHandler
     path = "#{dir}/../templates/endpoints/#{template_name}.html.erb"
     load_template path
   end
+
+  def make_template_name(suffix = '')
+    base_name = self.class.name 
+    "#{base_name}#{suffix}"
+  end
   
   def load_page_template(name)
     template_name = name.nil? ? self.class.name : name

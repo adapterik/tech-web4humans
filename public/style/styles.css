@@ -41,6 +41,54 @@ a.adaptations-letter {
     color: white;
 }
 
+.reader article {
+    padding: 0.5rem;
+    margin-bottom: 50px; 
+    margin: 0 auto 1rem auto;
+    max-width: 40rem;
+}
+
+.reader article > h1 {
+ padding-bottom: 0;
+ margin-bottom: 0;
+}
+
+.reader article > div.subtitle {
+padding: 0.25rem 0 1 rem 0;
+font-style: italic;
+}
+
+
+.reader article > author {
+    font-style: italic;
+}
+
+.reader article > author  {
+    display: block;
+    margin-bottom: 2rem;
+}
+
+.reader article > .time-and-label {
+
+}
+
+.reader article > .time-and-label > .time-label {
+   font-style: italic; 
+   margin-right: 0.75rem;
+}
+
+.reader article > .time-and-label > time {
+}
+
+.reader article > footer {
+    padding-top: 0.5rem;
+    text-align: center;
+}
+
+.reader article > footer > a {
+    display: block;
+}
+
 .article {
     width: 50rem;
     font-family: sans-serif;

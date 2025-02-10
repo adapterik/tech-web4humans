@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%= include_partial "head" %>
+</head>
+<body data-bs-theme="dark" class="reader">
+  <article lang="en" class="markdown-rendered reader">
+    <h1><%= @context[:page]["title"] %></h1>
+    <div class="subtitle">Web4Humans</div>
+    <author ><%= @context[:content]['author'] %></author>
+    <div class="time-and-label">
+      <span class="time-label">Published</span>
+      <time role="datetime" datetime="<%= Time.at(@context[:content]['created']).strftime('iso8601')%>"> <%= @context[:processed_content]['published'] %></time>
+    </div>
+    <% if @context[:content]['updated'] != @context[:content]['created'] %>
+    <div class="time-and-label mb-4">
+      (
+      <span class="time-label">Last Updated</span>
+      <time role="<%= Time.at(@context[:content]['last_updated']).strftime('iso8603') %>"><%= @context[:processed_content]['updated'] %></time>
+      )
+    </div>
+
+    <% end %>
+    <%= include_content %>
+    <footer class="border-top">
+      <a href="<%= @context[:path] %>?view=normal">
+        <span class="bi bi-eye"></span> 
+        Open in Normal View
+      </a>
+      <a href="/home/<%= @context[:content_type]['id'] %>">
+        <span class="bi bi-arrow-90deg-up"></span>
+        Back to  <%= @context[:content_type]['collective_noun'] %> Index
+      </a>
+    </footer>
+  </article>
+</body>
+</html>

@@ -56,17 +56,39 @@ class ContentItem < EndpointHandler
       ui: ENV['HTTP_USER_AGENT']
     }
 
+    processed_content = {
+      'published' => Time.at(content['created']).strftime('%B %e, %Y'),
+      'updated' => Time.at(content['last_updated']).strftime('%B %e, %Y'),
+    }
+
     @context.merge!({
       site: @site,
       content_id: @content_id,
       content: content,
       content_type: content_type,
+      processed_content: processed_content,
       env: {
         request: request
       },
     })
 
     # template = load_endpoint_template
-    load_endpoint_template().result binding
+
+    view = @context[:params]["view"] or "normal"
+
+    template_name = case view
+    when 'normal'
+      make_template_name("")
+    when 'reader'
+      make_template_name("Reader")
+    else
+      make_template_name("")
+    end
+
+
+    # template_name =  make_template_name('Reader')
+
+
+    load_endpoint_template(template_name).result binding
   end
 end

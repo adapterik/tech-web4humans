@@ -4,11 +4,9 @@ In which we explain how to use the web4humans Tech site.
 
 ## Running and Developing Locally
 
-Development relies upon very few host tools - to whit, Docker and Bash.
-
 ### With Host Ruby
 
-
+Developing the site on your local host environment is relatively straightforward, but I would recommend using the Docker-based workflow.
 
 Still, if you would prefer this more light-weight but finicky approach, read on!
 
@@ -33,72 +31,7 @@ bundle install
 OWNER_PASSWORD=abc123 HOME_DIR=`pwd` bundle exec puma
 ```
 
-### Running and Developing with Docker
-
-As mentioned above, the preferred way to develop the site is to do so with the Docker. We use `docker compose` to run a development container and a proxy container. The development container is where we work, and were our server operates - the proxy container provides the public interface for web browser access, and by default requires a test ssl certificate.
-
-#### Requirements 
-
-- Docker
-
-#### Starting up dev 
-
-./please shell-dev-images
-
-update any gems that need it 
-
-bundle lock
-
-bundle install
-
-OWNER_PASSWORD=abc HOME_DIR=`pwd` bundle exec guard -i
-
-#### Preparation
-
-##### Create temp certificate
-
-```
-./please install-ssl-certs
-```
-
-
-#### Using "real" hostname
-
-The production site is available at `https://tech.web4humans.com`. In order to utilize the site on this host, see below:
-
-Install dependencies onto your host:
-
-- mkcert
-- nss
-
-With macports:
-
-```
-sudo port install mkcert
-sudo port install nss
-```
-
-Install the development certificates with:
-
-```shell
-./tools/proxy/make-dev-cert.sh
-```
-
-Set the host in `/etc/hosts`, adding the line:
-
-```text
-127.0.0.1   tech.web4humans.com
-```
-
-You should now be able to access the local site at
-
-```url
-https://tech.web4humans.com
-```
-
-Don't forget to comment out the new `/etc/hosts` line if you want to access the production site.
-
-### Running and Developing with a Docker Devcontainer
+### Running and Developing with a devcontainer (Docker)
 
 As mentioned above, the preferred way to develop the site is to do so with the Docker. The specific workflow utilizes a *devcontainer*. Since Visual Studio Code, at the time of writing, provides a stable, reliable devcontainer implementation, we will use it.
 

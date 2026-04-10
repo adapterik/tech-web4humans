@@ -3,12 +3,29 @@
 <head>
   <%= include_partial "head" %>
 </head>
-<body data-bs-theme="dark" class="d-flex flex-column two-column-page">
+<body data-bs-theme="dark" class="d-flex flex-column two-column-page ContentItem">
   <%= include_partial "page-header" %>
   <div class="content-area -grid">
     <main class="-col1">
       <article lang="en" style="overflow-y: auto;" class="markdown-rendered">
         <author class="mb-4"><%= @context[:content]['author'] %></author>
+
+      <div class="time-and-label">
+        <span class="time-label">Published</span>
+        <time role="datetime" class="time-value" datetime="<%= Time.at(@context[:content]['created']).strftime('iso8601')%>"> <%= @context[:processed_content]['published'] %></time>
+    </div>
+
+    <% if @context[:content]['updated'] != @context[:content]['created'] %>
+
+    <div class="time-and-label mb-4">
+      (
+      <span class="time-label">Last Updated</span>
+      <time role="datetime" class="time-value" datetime="<%= Time.at(@context[:content]['last_updated']).strftime('iso8603') %>"><%= @context[:processed_content]['updated'] %></time>
+      )
+    </div>
+
+    <% end %>
+
         <section>
           <%= include_content %>
         </section>

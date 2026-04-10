@@ -1,4 +1,4 @@
-Copyright 2024 Erik Pearson
+Copyright 2026 Erik Pearson
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 

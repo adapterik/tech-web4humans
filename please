@@ -1,0 +1,721 @@
+#!/bin/bash
+
+#
+# CONFIG
+#
+PROJECT_DIR="${PWD}"
+APP_DIR=/app
+BUILD_DIR=/app/build
+SOURCE_DIR=/app/source
+PROD_DIR=/app
+SITES_DIR=/app/source/sites
+TOOLS_DIR=/app/tools
+HTTPD_USER=www-data
+HTTPD_GROUP=www-data
+APP_ROOT=/app/build
+
+#
+# PRIVATE
+#
+
+function _noop {
+    echo "Not implemented yet"
+}
+
+
+################################################################################
+#
+# Internal functions
+#
+################################################################################
+
+function _ensure-docker-env {
+  if ! [ -f /.dockerenv ]; then
+    echo "Sorry, this task only runs in a docker container; abandoning task"
+    exit 1
+  fi
+}
+
+function _ensure-host-env {
+  if [ -f /.dockerenv ]; then
+    echo "Sorry, this task only runs in the host environment; abandoning task"
+    exit 1
+  fi
+}
+
+################################################################################
+#
+# Development tools
+#
+#################################################################################
+
+function build-dev-image {
+  _ensure-host-env
+  docker build --file tools/dev/Dockerfile -t jazz-democracy:dev .
+}
+
+function shell-dev-image {
+  _ensure-host-env
+  DIR="$PWD" docker compose -f tools/dev/docker-compose.yml run --rm --service-ports --entrypoint bash adapt-site
+}
+
+function shell-into-dev-image {
+  _ensure-host-env
+  APP_ROOT=${APP_ROOT} DIR="$PWD" docker compose -f tools/dev/docker-compose.yml exec dev bash
+}
+
+function generate-dev-cert {
+    mkcert -cert-file ./tools/proxy/contents/ssl/test.crt --key-file ./tools/proxy/contents/ssl/test.key tech.web4humans.com
+
+    env bash tools/make-dev-cert.sh
+}
+#
+#   CONTAINER_PORT=80 BUILD_TYPE=dev SCHEME=http set-build-vars
+#
+#   # DATA="{\"SMTP2GO_API_KEY\":\"${SMTP2GO_API_KEY}\", \"CONTACT_EMAIL\":\"${CONTACT_EMAIL}\"}"
+#   #
+#   # perl-render ${SOURCE_DIR}/config/config.conf ${BUILD_DIR}/config/config.conf "${DATA}"
+#
+#   docker run \
+#     -v ${PWD}:/app \
+#     -e BASE_URL_USA_SITE \
+#     -e BASE_URL_AUS_SITE \
+#     -e BASE_URL_WES_SITE \
+#     --entrypoint ./please jazz-democracy:dev run-dev-sync-jekyll ${1}
+# }
+#
+# function run-dev-sync-jekyll {
+#   ensure-docker-env
+#
+#   site_alias="${1}"
+#
+#   cd ${TOOLS_DIR}/dev
+#
+#   echo "[run-dev-sync-jekyll] SITE ALIAS: ${site_alias}"
+#
+#   BUNDLE_PATH=${BUILD_DIR}/vendor BUNDLE_GEMFILE=${TOOLS_DIR}/dev/Gemfile bundle install
+#
+#   cd ${APP_DIR}
+#
+#   BUNDLE_PATH=${BUILD_DIR}/vendor \
+#   BUNDLE_GEMFILE=${TOOLS_DIR}/dev/Gemfile \
+#   bundle exec jekyll build \
+#   -s ${SOURCE_DIR}/sites/${site_alias}/jekyll-source \
+#   -d ${BUILD_DIR}/sites/${site_alias}/htdocs --watch
+# }
+#
+# function run-dev-build {
+#   ensure-host-env
+#
+#   echo "[run-dev-sync] ARG: ${1}"
+#
+#   CONTAINER_PORT=80 BUILD_TYPE=dev SCHEME=http set-build-vars
+#
+#   DATA="{\"SMTP2GO_API_KEY\":\"${SMTP2GO_API_KEY}\", \"CONTACT_EMAIL\":\"${CONTACT_EMAIL}\"}"
+#
+#   perl-render ${SOURCE_DIR}/config/config.conf ${BUILD_DIR}/config/config.conf "${DATA}"
+#
+#   docker run \
+#     -v ${PWD}:/app \
+#     -e BASE_URL_USA_SITE \
+#     -e BASE_URL_AUS_SITE \
+#     -e BASE_URL_WES_SITE \
+#     --entrypoint ./please jazz-democracy:dev run-dev-build-jekyll ${1}
+# }
+#
+# function run-dev-build-jekyll {
+#   ensure-docker-env
+#
+#   site_alias="${1}"
+#
+#   cd ${TOOLS_DIR}/dev
+#
+#   echo "[run-dev-sync-jekyll] SITE ALIAS: ${site_alias}"
+#
+#   BUNDLE_PATH=${BUILD_DIR}/vendor BUNDLE_GEMFILE=${TOOLS_DIR}/dev/Gemfile bundle install
+#
+#   cd ${APP_DIR}
+#
+#   BUNDLE_PATH=${BUILD_DIR}/vendor \
+#   BUNDLE_GEMFILE=${TOOLS_DIR}/dev/Gemfile \
+#   bundle exec jekyll build \
+#   -s ${SOURCE_DIR}/sites/${site_alias}/jekyll-source \
+#   -d ${BUILD_DIR}/sites/${site_alias}/htdocs
+# }
+#
+# function shell-dev-sync {
+#   ensure-host-env
+#
+#   CONTAINER_PORT=80 BUILD_TYPE=dev set-build-vars
+#
+#   DATA="{\"SMTP2GO_API_KEY\":\"${SMTP2GO_API_KEY}\", \"CONTACT_EMAIL\":\"${CONTACT_EMAIL}\"}"
+#
+#   perl-render ${SOURCE_DIR}/config/config.conf ${BUILD_DIR}/config/config.conf "${DATA}"
+#
+#   docker run -it -v ${PWD}:/app --entrypoint bash  jazz-democracy:dev
+# }
+#
+# function run-ruby {
+#   BUNDLE_PATH=/app/devenv/vendor BUNDLE_GEMFILE=/app/tools/dev/Gemfile bundle exec ruby $1
+# }
+#
+# function clean-dev {
+#   ensure-docker-env
+#   rm -rf /devenv
+#   echo "development environment cleaned (removed!)"
+# }
+#
+# function start-dev-server {
+#   ensure-host-env
+#
+#   DIR="$PWD" docker run \
+#     -e SMTP2GO_API_KEY=${SMTP2GO_API_KEY:-abc123} \
+#     -e CONTACT_EMAIL=${CONTACT_EMAIL:-foo@bar.baz} \
+#     run \
+#     --rm --service-ports --entrypoint /app/build/please dev start-dev-web
+# }
+#
+# #
+# # Starts the dev web server
+# # Note, for now, run in a separate window, inside the container
+# # NOTE:
+# #
+# function start-dev-web {
+#   ensure-docker-env
+#   CONTAINER_PORT=80 BUILD_TYPE=dev set-build-vars
+#
+#   # TODO: Ensure that the SMTP2GO_API_KEY is defined
+#   envsubst < ${SOURCE_DIR}/config/config.conf > ${APP_ROOT}/config/config.conf
+#
+#   exec apache2 -D FOREGROUND -f ${APP_ROOT}/config/apache2.conf
+# }
+#
+# function stop-dev-web {
+#   echo "NOT IMPLEMENTED"
+# }
+#
+# function build-build-image {
+#   ensure-host-e
+#   DIR=$PWD docker compose -f tools/build/docker-compose.yml build
+# }
+#
+# ################################################################################
+# #
+# # Final build function and associated helper functions.
+# #
+# ################################################################################
+#
+# #
+# # Build all sites and config files, prepare the filesystem, and wrap it all
+# # up in a Debian docker image!
+# #
+# function build-sites {
+#   ensure-host-env
+#
+#   clean-build-filesystem
+#
+#   prepare-build-filesystem
+#
+#   set-build-vars
+#
+#   build-jekyll-sites
+#
+#   build-fallback-site
+#
+#   build-config
+#
+#   copy-deployment-files
+# }
+#
+#
+# #
+# # Zap the build directory.
+# #
+# # All build artifacts, including the final product, live in the top level
+# # "build" directory.
+# #
+# function clean-build-filesystem {
+#   echo ""
+#   echo "**********************"
+#   echo "** clean build - begin"
+#   echo "**********************"
+#
+#   ensure-host-env
+#
+#   shell-command rm -rf "${BUILD_DIR}"
+#
+#   echo "**********************"
+#   echo "** clean build - end"
+#   echo "**********************"
+#   echo ""
+# }
+#
+# #
+# # Prepare the build directories including permissions
+# #
+# function prepare-build-filesystem {
+#   echo ""
+#   echo "**************************************"
+#   echo "** Preparing  build filesystem ...   *"
+#   echo "**************************************"
+#
+#   ensure-host-env
+#
+#   # usa site
+#   shell-command mkdir -p "${BUILD_DIR}/sites/jazzdemocracy_com/htdocs"
+#
+#   # australia site
+#   shell-command mkdir -p "${BUILD_DIR}/sites/jazzdemocracy_au/htdocs"
+#
+#   # podcast site
+#   shell-command mkdir -p "${BUILD_DIR}/sites/doctorwes_com/htdocs"
+#
+#   # Make a dir for a fake doc root until we can figure out how to
+#   # remove this requirement for a vhosted server config...
+#   shell-command mkdir -p "${BUILD_DIR}/sites/fake/htdocs"
+#
+#   shell-command mkdir -p "${BUILD_DIR}/deploy"
+#   shell-command mkdir -p "${BUILD_DIR}/config"
+#
+#   # Prepare for lighttpd
+#   echo "    setting up log directories..."
+#   shell-command mkdir -p "${BUILD_DIR}/logs"
+#
+#   echo "**********************"
+#   echo "** done!             *"
+#   echo "**********************"
+#   echo ""
+# }
+#
+# #
+# # We rely upon environment variables to control a few aspects of the build.
+# #
+# # When set here, they are global.
+# #
+# # At build time we control the hostnames for each site...
+# #
+# # You know, it might be simpler to omit these and just use the canonical
+# # hostnames for development.
+# #
+# function set-build-vars {
+#   echo ""
+#   echo "**********************"
+#   echo "** Setting build var *"
+#   echo "**********************"
+#
+#   ensure-host-env
+#
+#   # supported build variables
+#   echo "ENV VARS!"
+#   echo "CONTAINER_PORT: ${CONTAINER_PORT}"
+#   echo "SERVER_PORT: ${SERVER_PORT}"
+#
+#   CONTAINER_PORT="${CONTAINER_PORT:-4000}"
+#   SERVER_PORT="${SERVER_PORT:-4000}"
+#
+#   echo "CONTAINER_PORT is $CONTAINER_PORT"
+#   echo "SERVER_PORT is $SERVER_PORT"
+#
+#   BUILD_TYPE=${BUILD_TYPE:-'prod'}
+#
+#   if [[ "${BUILD_TYPE}" == 'dev' ]]
+#   then
+#     HOST_USA_SITE='jazzdemocracy.com'
+#     HOST_AUS_SITE='jazzdemocracy.au'
+#     HOST_WES_SITE='doctorwes.com'
+#     SCHEME="${SCHEME:-http}"
+#   elif [[ "${BUILD_TYPE}" == 'prod' ]]
+#   then
+#     HOST_USA_SITE='jazzdemocracy.com'
+#     HOST_AUS_SITE='jazzdemocracy.au'
+#     HOST_WES_SITE='doctorwes.com'
+#     SCHEME="${SCHEME:-https}"
+#   elif [[ ${BUILD_TYPE} == 'beta' ]]
+#   then
+#     HOST_USA_SITE='jazzdemocracy.com.beta.adaptations.com'
+#     HOST_AUS_SITE='jazzdemocracy.au.beta.adaptations.com'
+#     HOST_WES_SITE='doctorwes.com.beta.adaptations.com'
+#     SCHEME="${SCHEME:-https}"
+#   else
+#     echo "Bad BUILD_TYPE: ${BUILD_TYPE}"
+#     exit 1
+#   fi
+#
+#   BASE_URL_USA_SITE="${SCHEME}://www.${HOST_USA_SITE}"
+#   BASE_URL_AUS_SITE="${SCHEME}://www.${HOST_AUS_SITE}"
+#   BASE_URL_WES_SITE="${SCHEME}://www.${HOST_WES_SITE}"
+#
+#   export SERVER_PORT
+#   export CONTAINER_PORT
+#   export HOST_USA_SITE
+#   export HOST_AUS_SITE
+#   export HOST_WES_SITE
+#   export BASE_URL_USA_SITE
+#   export BASE_URL_AUS_SITE
+#   export BASE_URL_WES_SITE
+#   export APP_ROOT=$APP_ROOT
+#
+#   echo "Exported:"
+#   echo "SERVER_PORT     : ${SERVER_PORT}"
+#   echo "CONTAINER_PORT    : ${CONTAINER_PORT}"
+#   echo "HOST_USA_SITE     : ${HOST_USA_SITE}"
+#   echo "HOST_AUS_SITE     : ${HOST_AUS_SITE}"
+#   echo "HOST_WES_SITE     : ${HOST_WES_SITE}"
+#   echo "BASE_URL_USA_SITE : ${BASE_URL_USA_SITE}"
+#   echo "BASE_URL_USA_SITE : ${BASE_URL_AUS_SITE}"
+#   echo "BASE_URL_WES_SITE : ${BASE_URL_WES_SITE}"
+#   echo "DEV_ROOT          : ${DEV_ROOT}"
+#
+#   echo "**********************"
+#   echo "** Done.             *"
+#   echo "**********************"
+#   echo ""
+# }
+#
+# function _jekyll-build {
+#   jekyll build  \
+#     -s ${SITES_DIR}/${1}/jekyll-source \
+#     -d ${BUILD_DIR}/sites/${1}/htdocs \
+#     --config ${SITES_DIR}/${1}/jekyll-source/_${2}_config.yml
+# }
+#
+# function build-jekyll-sites {
+#   echo ""
+#   echo "******************************"
+#   echo "** Building Jekyll sites ... *"
+#   echo "******************************"
+#   ensure-host-env
+#
+#   echo "ENV VARS:"
+#   echo "BASE_URL_USA_SITE: ${BASE_URL_USA_SITE}"
+#   echo "BASE_URL_AUS_SITE: ${BASE_URL_AUS_SITE}"
+#   echo "BASE_URL_WES_SITE: ${BASE_URL_WES_SITE}"
+#
+#   DIR=$PWD docker compose \
+#     -f tools/ruby/docker-compose.yml \
+#     run \
+#     --rm \
+#     --entrypoint /app/please \
+#     -e BASE_URL_USA_SITE=${BASE_URL_USA_SITE} \
+#     -e BASE_URL_AUS_SITE=${BASE_URL_AUS_SITE} \
+#     -e BASE_URL_WES_SITE=${BASE_URL_WES_SITE} \
+#     ruby build-jekyll-site jazzdemocracy_com $BUILD_TYPE
+#
+#
+#   DIR=$PWD docker compose \
+#     -f tools/ruby/docker-compose.yml \
+#     run \
+#     --rm \
+#     --entrypoint /app/please \
+#       -e BASE_URL_USA_SITE=${BASE_URL_USA_SITE} \
+#       -e BASE_URL_AUS_SITE=${BASE_URL_AUS_SITE} \
+#       -e BASE_URL_WES_SITE=${BASE_URL_WES_SITE} \
+#     ruby build-jekyll-site jazzdemocracy_au $BUILD_TYPE
+#
+#   DIR=$PWD docker compose \
+#     -f tools/ruby/docker-compose.yml \
+#     run \
+#     --rm \
+#     --entrypoint /app/please \
+#       -e BASE_URL_USA_SITE=${BASE_URL_USA_SITE} \
+#       -e BASE_URL_AUS_SITE=${BASE_URL_AUS_SITE} \
+#       -e BASE_URL_WES_SITE=${BASE_URL_WES_SITE} \
+#     ruby build-jekyll-site doctorwes_com $BUILD_TYPE
+#
+#   echo "******************************"
+#   echo "** Done.                     *"
+#   echo "******************************"
+#   echo ""
+# }
+#
+#
+# function shell-ruby {
+#   ensure-host-env
+#   DIR="$PWD" docker compose -f tools/ruby/docker-compose.yml run -it --entrypoint bash ruby
+# }
+#
+# function build-jekyll-site {
+#   ensure-docker-env
+#
+#   echo ""
+#   echo "****************************************"
+#   echo "** Building Jekyll site: ${1}:${2} ... *"
+#   echo "****************************************"
+#
+#   # Set environment variables for the build
+#   echo "ENV VARS:"
+#   echo "BASE_URL_USA_SITE: ${BASE_URL_USA_SITE}"
+#   echo "BASE_URL_AUS_SITE: ${BASE_URL_AUS_SITE}"
+#   echo "BASE_URL_WES_SITE: ${BASE_URL_WES_SITE}"
+#
+#   jekyll build  \
+#     -s ${SITES_DIR}/${1}/jekyll-source \
+#     -d ${BUILD_DIR}/sites/${1}/htdocs \
+#     --config ${SITES_DIR}/${1}/jekyll-source/_config.yml
+#
+#   echo "******************************"
+#   echo "** Done building Jekyll site *"
+#   echo "******************************"
+#   echo ""
+# }
+#
+# function build-fallback-site {
+#     echo ""
+#     echo "*******************************"
+#     echo "** Building fallback site ... *"
+#     echo "*******************************"
+#     ensure-host-env
+#
+#     DATA="{\"BASE_URL_USA_SITE\": \"${BASE_URL_USA_SITE}\", \"BASE_URL_AUS_SITE\": \"${BASE_URL_AUS_SITE}\", \"BASE_URL_WES_SITE\": \"${BASE_URL_WES_SITE}\"}"
+#
+#     # This takes care of the one generated page.
+#     perl-render ${SOURCE_DIR}/sites/fake/404.html ${BUILD_DIR}/sites/fake/htdocs/404.html "${DATA}"
+#
+#     # Copy the rest
+#     shell-command cp "${SOURCE_DIR}/sites/fake/j&d-logo.png" "${BUILD_DIR}/sites/fake/htdocs"
+#     shell-command cp "${SOURCE_DIR}/sites/fake/styles.css" "${BUILD_DIR}/sites/fake/htdocs"
+#     echo "******************************"
+#     echo "** Done building perl sites. *"
+#     echo "******************************"
+#     echo ""
+# }
+#
+# function build-config {
+#     echo ""
+#     echo "******************************"
+#     echo "** build-config begin...     *"
+#     echo "******************************"
+#
+#     ensure-host-env
+#
+#     DATA="{\"APP_ROOT\": \"${APP_ROOT}\", \"HOST_USA_SITE\": \"${HOST_USA_SITE}\", \"HOST_AUS_SITE\": \"${HOST_AUS_SITE}\", \"HOST_WES_SITE\": \"${HOST_WES_SITE}\", \"SERVER_PORT\": \"${SERVER_PORT}\"}"
+#
+#     perl-render ${SOURCE_DIR}/config/apache2.conf ${BUILD_DIR}/config/apache2.conf "${DATA}"
+#     echo "******************************"
+#     echo "* build-config Done          *"
+#     echo "******************************"
+# }
+#
+# #
+# # Deployment files need to be placed into the build, ready for use at
+# # deployment time.
+# #
+# function copy-deployment-files {
+#   ensure-host-env
+#
+#   shell-command cp ${SOURCE_DIR}/deploy/entrypoint.sh /app/build/deploy
+#   shell-command cp ${SOURCE_DIR}/config/config.conf /app/build/deploy
+#   # we borrow the render script from the build tools
+#   shell-command cp ${TOOLS_DIR}/perl/render.pl /app/build/deploy
+#   shell-command cp ${SOURCE_DIR}/config/mime.conf /app/build/config
+# }
+#
+# #
+# # Ensure correct ownership and permissions for all files in the build.
+# #
+# function finalize-build-filesystem {
+#   echo ""
+#   echo "**************************************"
+#   echo "** Finalizing build filesystem ...   *"
+#   echo "**************************************"
+#
+#   ensure-host-env
+#
+#   shell-command chown -R "${HTTPD_USER}:${HTTPD_GROUP}" ${BUILD_DIR}
+#
+#   shell-command chmod u+w ${BUILD_DIR}/logs
+#
+#   echo "**********************"
+#   echo "** done!             *"
+#   echo "**********************"
+#   echo ""
+# }
+#
+# ################################################################################
+# ################################################################################
+#
+# function bash-build {
+#   DIR=$PWD docker compose -f tools/build/docker-compose.yml run --rm build bash
+# }
+#
+# function build-deploy-image {
+#   ensure-host-env
+#   docker build -t jazz-democracy:prod .
+# }
+#
+# function shell-deploy-image {
+#   ensure-host-env
+#   docker run -it --rm -p 4000:4000 --name jazzdemocracy-prod --entrypoint bash jazz-democracy:prod
+# }
+#
+# function run-deploy-image {
+#   docker run \
+#     -e SMTP2GO_API_KEY=${SMTP2GO_API_KEY} \
+#     -e CONTACT_EMAIL=${CONTACT_EMAIL} \
+#     --name jazzdemocracy-prod \
+#     -v ${PWD}:/app \
+#     -p ${EXTERNAL_PORT:-80}:4000 \
+#     --rm \
+#     jazz-democracy:prod
+# }
+#
+# function shell-into-deploy-image {
+#   ensure-host-env
+#   docker exec -it jazzdemocracy-prod bash
+# }
+#
+#
+# #
+# # Here we create the image we need for building the sites and config files.
+# #
+# function build-build-image {
+#   ensure-host-env
+#   DIR="$PWD" docker compose -f tools/dev/docker-compose.yml build --no-cache
+#   docker build --file tools/build/Dockerfile -t jazz-democracy:build .
+# }
+#
+#
+# function bash-prod-image {
+#   ensure-host-env
+#   docker build -f tools/prod/Dockerfile -t jazz-democracy-us:prod .
+# }
+#
+# function run-prod-image {
+#   ensure-host-env
+#   DIR="$PWD" docker compose -f tools/prod/docker-compose.yml run --service-ports prod /site/run-lighttpd.sh
+# }
+#
+# function start-prod-web {
+#   ensure-docker-env
+#   sh -c 'echo $$; exec lighttpd -D -f /app/build/lighttpd.conf'
+# }
+#
+# function start-web {
+#   ensure-docker-env
+#   sh -c 'echo $$; exec lighttpd -D -f /app/build/lighttpd.conf'
+# }
+#
+# ################################################################################
+# #
+# # Perl tools
+# #
+# ################################################################################
+
+function run-perl {
+  _ensure-host-env
+  DIR=$PWD docker compose -f tools/perl/docker-compose.yml run perl "$@"
+}
+
+function perl-shell {
+  _ensure-host-env
+  DIR=$PWD docker compose \
+  -f tools/perl/docker-compose.yml \
+  run \
+  -it \
+  --entrypoint bash \
+  perl
+}
+
+#
+# Runs a shell command using the perl image
+#
+# TODO: replace with a simple, tiny alpine linux.
+#
+function perl-shell-command {
+  _ensure-host-env
+
+  echo ""
+  echo "> perl-shell-command: $@ "
+  echo ""
+
+  DIR=$PWD docker compose \
+  -f tools/perl/docker-compose.yml \
+  run \
+  --rm \
+  --entrypoint "" \
+  perl "$@"
+}
+
+function run-perl-hello {
+  _ensure-host-env
+  DIR=$PWD docker compose \
+  -f tools/perl/docker-compose.yml \
+  run \
+  --rm \
+  -e NAME="${NAME}" \
+  perl "${TOOLS_DIR}/perl/hello.pl" "$@"
+}
+
+function perl-shell {
+  _ensure-host-env
+  DIR=$PWD docker compose \
+  -f tools/perl/docker-compose.yml \
+  run \
+  --rm \
+  -e NAME="${NAME}" \
+  --entrypoint "bash" \
+  perl
+}
+
+function perl-render {
+  _ensure-host-env
+  DIR=$PWD docker compose \
+  -f tools/perl/docker-compose.yml \
+  run \
+  --rm \
+  perl "${TOOLS_DIR}/perl/render.pl" "$@"
+}
+
+# function shell-command {
+#   ensure-host-env
+#
+#   echo "> -shell-command: $@ "
+#
+#   DIR=$PWD docker compose \
+#   -f tools/alpine/docker-compose.yml \
+#   run \
+#   --rm \
+#   --entrypoint "" \
+#   alpine "$@"
+# }
+#
+#
+# function bash-eval {
+#   ensure-host-env
+#
+#   echo ""
+#   echo "> -to eval: $@ "
+#   echo ""
+#
+#   DIR=$PWD docker compose \
+#   -f tools/alpine/docker-compose.yml \
+#   run \
+#   --rm \
+#   alpine "-c" "eval $@"
+# }
+
+#
+# function text-render {
+#   ensure-host-env
+#   DIR=$PWD docker compose \
+#   -f tools/alpine/dociker-compose.yml \
+#   run \
+#   --rm \
+#   alpine /app/source/bash/render.bash "$@"
+# }
+
+################################################################################
+################################################################################
+
+function help {
+    echo "$0 <task> <args>"
+    echo "Runs the tasks listed below."
+    echo "To find out more about them, either read the source"
+    echo "for ${0} or the docs located in 'docs/tasks.md'."
+    echo "Tasks:"
+    # Note that this omits private functions - those prefixed with an _
+    compgen -A function | grep -e '^[^_]' | cat -n
+}
+
+TIMEFORMAT="Task completed in %3lR"
+time "${@:-help}"

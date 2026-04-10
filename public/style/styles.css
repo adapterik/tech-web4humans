@@ -373,3 +373,20 @@ Main layout
 The site is primarl
 
 */
+
+/* ContentItem */
+
+
+
+.ContentItem .time-and-label {
+}
+
+.ContentItem .time-and-label .time-label {
+    font-style: italic;
+    margin-right: 0.75rem;
+}
+
+.ContentItem .time-and-label .time-value {
+    font-style: italic;
+    margin-right: 0.75rem;
+}

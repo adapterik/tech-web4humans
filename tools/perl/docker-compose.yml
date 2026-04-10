@@ -1,0 +1,10 @@
+services:
+  perl:
+    working_dir: /app
+    build:
+        context: .
+        dockerfile: Dockerfile
+    container_name: perl
+    dns: 8.8.8.8
+    volumes:
+      - $DIR:/app
